@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "709A1014303569A20095B3EE"
-               BuildableName = "TapCash.app"
+               BuildableName = "Tap Cash Development.app"
                BlueprintName = "TapCash"
                ReferencedContainer = "container:TapCash.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "709A1014303569A20095B3EE"
-            BuildableName = "TapCash.app"
+            BuildableName = "Tap Cash Development.app"
             BlueprintName = "TapCash"
             ReferencedContainer = "container:TapCash.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "709A1014303569A20095B3EE"
-            BuildableName = "TapCash.app"
+            BuildableName = "Tap Cash Development.app"
             BlueprintName = "TapCash"
             ReferencedContainer = "container:TapCash.xcodeproj">
          </BuildableReference>
