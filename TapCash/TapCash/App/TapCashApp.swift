@@ -4,6 +4,8 @@ import SwiftUI
 /// Authentication, balances, and cash movement are SIMULATED.
 @main
 struct TapCashApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     var body: some Scene {
         WindowGroup {
             RootView()
