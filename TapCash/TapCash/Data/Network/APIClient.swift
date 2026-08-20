@@ -102,6 +102,10 @@ public final class RemoteMapper {
     private init() {}
     
     public static func map<T: Decodable>(_ data: Data, _ response: HTTPURLResponse, decoder: JSONDecoder = JSONDecoder()) throws -> T {
+        if let dateHeader = response.value(forHTTPHeaderField: "Date") {
+            TimeSyncTracker.shared.syncTime(withServerDateString: dateHeader)
+        }
+        
         guard (200..<300).contains(response.statusCode) else {
             if let apiError = try? decoder.decode(ApiError.self, from: data) {
                 throw apiError

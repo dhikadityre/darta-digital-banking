@@ -43,7 +43,9 @@ final class QRScreenViewModel: ObservableObject {
         formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
         let date = formatter.date(from: expiresAt) ?? ISO8601DateFormatter().date(from: expiresAt)
         if let date = date {
-            self.remainingSeconds = max(0, Int(date.timeIntervalSinceNow))
+            // self.remainingSeconds = max(0, Int(date.timeIntervalSinceNow))
+            let serverTime = TimeSyncTracker.shared.serverTimeNow()
+            self.remainingSeconds = max(0, Int(date.timeIntervalSince(serverTime)))
         } else {
             self.remainingSeconds = 0
         }
