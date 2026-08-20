@@ -45,6 +45,7 @@ struct RootView: View {
                 .toolbar(.hidden, for: .navigationBar)
             }
         }
+        .adaptiveStatusBar(backgroundColor: Palette.canvas)
     }
 }
 
