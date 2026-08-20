@@ -15,12 +15,12 @@ final class WithdrawalViewModel: ObservableObject {
     @Published var email: String?
     @Published var displayName: String?
     @Published var balanceCents: Int = 0
-    @Published var limits: LimitsResponse?
-    @Published var ticket: TicketResponse?
+    @Published var limits: LimitsEntity?
+    @Published var ticket: TicketEntity?
     @Published var lastAmountCents: Int = 0
 
     // ATM (scan & redeem) mode
-    @Published var dispenseResult: DispenseResponse?
+    @Published var dispenseResult: DispenseEntity?
     @Published var scanError: String?
 
     private let loginUseCase: LoginUseCase
@@ -75,7 +75,7 @@ final class WithdrawalViewModel: ObservableObject {
                 self.ticket = ticket
                 self.loading = false
                 self.route = .qr
-            } catch let apiError as ApiError {
+            } catch let apiError as ApiErrorEntity {
                 self.loading = false
                 self.errorMessage = apiError.message
             } catch {

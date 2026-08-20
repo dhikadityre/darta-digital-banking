@@ -1,7 +1,7 @@
 import Foundation
 
 protocol LoginUseCase {
-    func execute(email: String, password: String) async throws -> (account: AccountResponse, limits: LimitsResponse)
+    func execute(email: String, password: String) async throws -> (account: AccountEntity, limits: LimitsEntity)
 }
 
 final class LoginUseCaseImpl: LoginUseCase {
@@ -11,7 +11,7 @@ final class LoginUseCaseImpl: LoginUseCase {
         self.repository = repository
     }
 
-    func execute(email: String, password: String) async throws -> (account: AccountResponse, limits: LimitsResponse) {
+    func execute(email: String, password: String) async throws -> (account: AccountEntity, limits: LimitsEntity) {
         let session = try await repository.login(email: email, password: password)
         let account = try await repository.getAccount(email: session.email)
         let limits = try await repository.getLimits(email: session.email)

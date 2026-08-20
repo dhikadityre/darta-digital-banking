@@ -1,7 +1,7 @@
 import Foundation
 
 protocol DispenseUseCase {
-    func execute(qrPayload: String) async throws -> DispenseResponse
+    func execute(qrPayload: String) async throws -> DispenseEntity
 }
 
 final class DispenseUseCaseImpl: DispenseUseCase {
@@ -11,7 +11,7 @@ final class DispenseUseCaseImpl: DispenseUseCase {
         self.repository = repository
     }
 
-    func execute(qrPayload: String) async throws -> DispenseResponse {
+    func execute(qrPayload: String) async throws -> DispenseEntity {
         try await repository.dispense(qrPayload: qrPayload)
     }
 }

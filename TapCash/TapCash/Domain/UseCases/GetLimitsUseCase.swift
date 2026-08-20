@@ -1,7 +1,7 @@
 import Foundation
 
 protocol GetLimitsUseCase {
-    func execute(email: String) async throws -> LimitsResponse
+    func execute(email: String) async throws -> LimitsEntity
 }
 
 final class GetLimitsUseCaseImpl: GetLimitsUseCase {
@@ -11,7 +11,7 @@ final class GetLimitsUseCaseImpl: GetLimitsUseCase {
         self.repository = repository
     }
 
-    func execute(email: String) async throws -> LimitsResponse {
+    func execute(email: String) async throws -> LimitsEntity {
         try await repository.getLimits(email: email)
     }
 }

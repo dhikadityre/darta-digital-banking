@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LimitsCard: View {
-    let limits: LimitsResponse
+    let limits: LimitsEntity
     
     private var fraction: Double {
         limits.dailyLimitCents == 0 ? 0 :

@@ -1,7 +1,7 @@
 import Foundation
 
 protocol CreateWithdrawalUseCase {
-    func execute(email: String, amountCents: Int) async throws -> TicketResponse
+    func execute(email: String, amountCents: Int) async throws -> TicketEntity
 }
 
 final class CreateWithdrawalUseCaseImpl: CreateWithdrawalUseCase {
@@ -11,7 +11,7 @@ final class CreateWithdrawalUseCaseImpl: CreateWithdrawalUseCase {
         self.repository = repository
     }
 
-    func execute(email: String, amountCents: Int) async throws -> TicketResponse {
+    func execute(email: String, amountCents: Int) async throws -> TicketEntity {
         try await repository.createWithdrawal(email: email, amountCents: amountCents)
     }
 }
