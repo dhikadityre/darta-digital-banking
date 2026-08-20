@@ -1,13 +1,8 @@
 import Foundation
 
 final class TapCashRepositoryImpl: TapCashRepository {
-    private static var authToken: String? {
-        get { UserDefaults.standard.string(forKey: "auth_token") }
-        set { UserDefaults.standard.set(newValue, forKey: "auth_token") }
-    }
-    
     private var authHeaders: [String: String]? {
-        guard let token = Self.authToken else { return nil }
+        guard let token = TokenManager.shared.token else { return nil }
         return ["Authorization": "Bearer \(token)"]
     }
 
@@ -34,8 +29,8 @@ final class TapCashRepositoryImpl: TapCashRepository {
         do {
             let dto: LoginResponse = try RemoteMapper.map(data, response, decoder: decoder)
             let entity = dto.toEntity()
-            Self.authToken = entity.token
-            UserDefaults.standard.set(dto.refreshToken, forKey: "refresh_token")
+            TokenManager.shared.token = entity.token
+            TokenManager.shared.refreshToken = dto.refreshToken
             return entity
         } catch let apiError as ApiError {
             throw apiError.toEntity()
@@ -79,7 +74,7 @@ final class TapCashRepositoryImpl: TapCashRepository {
     
     func createValidateWithdrawal(qrPayload: String) async throws -> WithdrawalValidateEntity {
         let url = baseURL.appendingPathComponent("/api/withdrawals/validate")
-        let requestBody = CreateWithdrawalValidateRequest(qrPayload: qrPayload, token: TapCashRepositoryImpl.authToken ?? "")
+        let requestBody = CreateWithdrawalValidateRequest(qrPayload: qrPayload, token: TokenManager.shared.token ?? "")
         let bodyData = try encoder.encode(requestBody)
         let (data, response) = try await client.post(to: url, data: bodyData, headers: authHeaders)
         do {

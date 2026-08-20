@@ -112,7 +112,7 @@ public final class URLSessionHTTPClient: HTTPClient {
     ) {
         lock.lock()
         
-        let storedToken = UserDefaults.standard.string(forKey: "auth_token") ?? ""
+        let storedToken = TokenManager.shared.token ?? ""
         if !storedToken.isEmpty && storedToken != expiredToken {
             lock.unlock()
             completion(.success(storedToken))
@@ -121,7 +121,7 @@ public final class URLSessionHTTPClient: HTTPClient {
         
         if isRefreshing {
             refreshQueue.append {
-                let freshToken = UserDefaults.standard.string(forKey: "auth_token") ?? ""
+                let freshToken = TokenManager.shared.token ?? ""
                 if !freshToken.isEmpty {
                     completion(.success(freshToken))
                 } else {
@@ -143,8 +143,8 @@ public final class URLSessionHTTPClient: HTTPClient {
             
             switch result {
             case let .success((newToken, newRefreshToken)):
-                UserDefaults.standard.set(newToken, forKey: "auth_token")
-                UserDefaults.standard.set(newRefreshToken, forKey: "refresh_token")
+                TokenManager.shared.token = newToken
+                TokenManager.shared.refreshToken = newRefreshToken
                 completion(.success(newToken))
                 
                 let queuedCompletions = self.refreshQueue
@@ -154,8 +154,7 @@ public final class URLSessionHTTPClient: HTTPClient {
                 queuedCompletions.forEach { $0() }
                 
             case let .failure(error):
-                UserDefaults.standard.removeObject(forKey: "auth_token")
-                UserDefaults.standard.removeObject(forKey: "refresh_token")
+                TokenManager.shared.clear()
                 completion(.failure(error))
                 
                 let queuedCompletions = self.refreshQueue
@@ -174,7 +173,7 @@ public final class URLSessionHTTPClient: HTTPClient {
         }
         let refreshURL = baseURL.appendingPathComponent("/api/auth/refresh")
         
-        let storedRefreshToken = UserDefaults.standard.string(forKey: "refresh_token") ?? ""
+        let storedRefreshToken = TokenManager.shared.refreshToken ?? ""
         let refreshRequestBody = RefreshRequest(refreshToken: storedRefreshToken)
         
         var request = URLRequest(url: refreshURL)
