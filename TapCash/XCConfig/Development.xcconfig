@@ -10,10 +10,7 @@
 
 #include "Base.xcconfig"
 
-API_BASE_URL = http:/$()/dev-url.com
-API_KEY = my_super_secret_development_api_key
-
-IS_PRODUCTION = NO
+API_BASE_URL = https:/$()/poc-api-bsn.mediatamaindoteknologi.co.id
 ENV_NAME = Development
 
 PRODUCT_NAME = $(APP_NAME) $(ENV_NAME)

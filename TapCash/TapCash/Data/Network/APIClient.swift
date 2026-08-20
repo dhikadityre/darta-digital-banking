@@ -5,7 +5,6 @@ struct APIClient {
 
     /// Base URL of the backend. Use your Mac's LAN IP when running on a physical device.
     /// The iOS Simulator can reach the host via `http://localhost:8080`.
-    // static let baseURL = URL(string: "http://localhost:8080")!
     static let baseURL = Config.apiBaseUrl!
 
     private let session: URLSession = .shared

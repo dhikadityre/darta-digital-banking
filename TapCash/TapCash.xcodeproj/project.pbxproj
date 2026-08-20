@@ -24,9 +24,22 @@
 		70F6EA3330359258005DCFED /* UAT.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = UAT.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		70F6EAA03035AD4E005DCFED /* Exceptions for "TapCash" folder in "TapCash" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 709A1014303569A20095B3EE /* TapCash */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		709A1017303569A20095B3EE /* TapCash */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				70F6EAA03035AD4E005DCFED /* Exceptions for "TapCash" folder in "TapCash" target */,
+			);
 			path = TapCash;
 			sourceTree = "<group>";
 		};
@@ -240,7 +253,8 @@
 				DEVELOPMENT_TEAM = W6NYRRRG5Q;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
+				INFOPLIST_FILE = TapCash/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Tap Cash Development";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -341,7 +355,8 @@
 				DEVELOPMENT_TEAM = W6NYRRRG5Q;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
+				INFOPLIST_FILE = TapCash/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Tap Cash Development";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -442,7 +457,8 @@
 				DEVELOPMENT_TEAM = W6NYRRRG5Q;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
+				INFOPLIST_FILE = TapCash/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Tap Cash Development";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -536,7 +552,8 @@
 				DEVELOPMENT_TEAM = W6NYRRRG5Q;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
+				INFOPLIST_FILE = TapCash/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Tap Cash Development";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -629,7 +646,8 @@
 				DEVELOPMENT_TEAM = W6NYRRRG5Q;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
+				INFOPLIST_FILE = TapCash/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Tap Cash Development";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -729,7 +747,8 @@
 				DEVELOPMENT_TEAM = W6NYRRRG5Q;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
+				INFOPLIST_FILE = TapCash/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Tap Cash Development";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -823,7 +842,8 @@
 				DEVELOPMENT_TEAM = W6NYRRRG5Q;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
+				INFOPLIST_FILE = TapCash/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Tap Cash Development";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
