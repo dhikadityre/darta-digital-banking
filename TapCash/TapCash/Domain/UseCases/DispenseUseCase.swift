@@ -1,3 +1,10 @@
+//
+//  AccountUseCase.swift
+//  TapCash
+//
+//  Created by DHIKA ADITYA ARE on 20/08/26.
+//
+
 import Foundation
 
 protocol DispenseUseCase {

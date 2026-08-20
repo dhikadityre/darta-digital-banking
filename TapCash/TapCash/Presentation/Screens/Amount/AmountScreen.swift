@@ -26,7 +26,7 @@ struct AmountScreen: View {
                     Button {
                         viewModel.selectedAmountCents = amount
                     } label: {
-                        Text(amount.usd)
+                        Text(amount.rupiah)
                             .font(.headline)
                             .frame(maxWidth: .infinity, minHeight: 54)
                             .foregroundStyle(viewModel.selectedAmountCents == amount ? .white : Palette.navy)
@@ -40,7 +40,7 @@ struct AmountScreen: View {
             }
 
             if !viewModel.isValid {
-                Text("Choose an amount within your remaining daily limit (\(viewModel.maxAllowed.usd)).")
+                Text("Choose an amount within your remaining daily limit (\(viewModel.maxAllowed.rupiah)).")
                     .foregroundStyle(.red).font(.footnote)
             }
             

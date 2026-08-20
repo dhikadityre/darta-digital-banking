@@ -18,12 +18,12 @@ struct LimitsCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Eyebrow(text: "Withdrawal limits")
-            row("Per transaction", "\(limits.minCents.usd) – \(limits.maxCents.usd)")
-            row("Daily limit", limits.dailyLimitCents.usd)
-            row("Used today", limits.withdrawnTodayCents.usd)
+            row("Per transaction", "\(limits.minCents.rupiah) – \(limits.maxCents.rupiah)")
+            row("Daily limit", limits.dailyLimitCents.rupiah)
+            row("Used today", limits.withdrawnTodayCents.rupiah)
             ProgressView(value: fraction)
                 .tint(Palette.orange)
-            Text("\(limits.remainingTodayCents.usd) remaining today")
+            Text("\(limits.remainingTodayCents.rupiah) remaining today")
                 .font(.subheadline.weight(.bold))
                 .foregroundStyle(Palette.navy)
         }

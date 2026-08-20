@@ -27,7 +27,7 @@ extension HomeScreen {
     private func renderHeader() -> some View {
         VStack(alignment: .leading, spacing: 16) {
             Eyebrow(text: "Available balance")
-            Text(viewModel.balanceCents.usd)
+            Text(viewModel.balanceCents.rupiah)
                 .font(.system(size: 44, weight: .bold, design: .rounded))
                 .foregroundStyle(Palette.ink)
             Text("Welcome back, \(viewModel.displayName).")

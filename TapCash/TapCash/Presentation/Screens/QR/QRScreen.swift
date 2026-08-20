@@ -17,7 +17,7 @@ struct QRScreen: View {
             if let ticket = viewModel.ticket {
                 let expired = viewModel.remainingSeconds <= 0
                 Eyebrow(text: "Show this code at the ATM")
-                Text(ticket.amountCents.usd)
+                Text(ticket.amountCents.rupiah)
                     .font(.system(size: 38, weight: .bold, design: .monospaced))
                     .foregroundStyle(Palette.ink)
 

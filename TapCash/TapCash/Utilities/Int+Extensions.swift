@@ -8,11 +8,13 @@
 import Foundation
 
 extension Int {
-    /// Formats a cent amount as USD, e.g. 4000 -> "$40.00".
-    var usd: String {
+    /// Formats an amount as Rupiah, e.g. 4000 -> "Rp 4.000".
+    var rupiah: String {
         let f = NumberFormatter()
         f.numberStyle = .currency
-        f.locale = Locale(identifier: "en_US")
-        return f.string(from: NSNumber(value: Double(self) / 100.0)) ?? "$0.00"
+        f.locale = Locale(identifier: "id_ID")
+        f.minimumFractionDigits = 0
+        f.maximumFractionDigits = 0
+        return f.string(from: NSNumber(value: self)) ?? "Rp0"
     }
 }
