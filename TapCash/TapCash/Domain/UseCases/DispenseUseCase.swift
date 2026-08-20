@@ -14,7 +14,7 @@ protocol DispenseUseCase {
 final class DispenseUseCaseImpl: DispenseUseCase {
     private let repository: TapCashRepository
 
-    init(repository: TapCashRepository = TapCashRepositoryImpl()) {
+    init(repository: TapCashRepository) {
         self.repository = repository
     }
 

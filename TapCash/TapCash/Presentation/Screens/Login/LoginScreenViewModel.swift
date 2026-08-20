@@ -19,7 +19,7 @@ final class LoginScreenViewModel: ObservableObject {
     
     private let loginUseCase: LoginUseCase
     
-    init(loginUseCase: LoginUseCase = LoginUseCaseImpl()) {
+    init(loginUseCase: LoginUseCase) {
         self.loginUseCase = loginUseCase
     }
     

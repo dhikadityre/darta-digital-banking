@@ -38,7 +38,7 @@ final class AmountScreenViewModel: ObservableObject {
     init(
         limits: LimitsEntity?,
         email: String,
-        createWithdrawalUseCase: CreateWithdrawalUseCase = CreateWithdrawalUseCaseImpl()
+        createWithdrawalUseCase: CreateWithdrawalUseCase
     ) {
         self.limits = limits
         self.email = email

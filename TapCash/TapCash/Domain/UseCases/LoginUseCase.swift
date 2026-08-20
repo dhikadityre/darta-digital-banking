@@ -14,7 +14,7 @@ protocol LoginUseCase {
 final class LoginUseCaseImpl: LoginUseCase {
     private let repository: TapCashRepository
 
-    init(repository: TapCashRepository = TapCashRepositoryImpl()) {
+    init(repository: TapCashRepository) {
         self.repository = repository
     }
 

@@ -34,10 +34,14 @@ final class WithdrawalViewModel: ObservableObject {
         createWithdrawalUseCase: CreateWithdrawalUseCase?,
         dispenseUseCase: DispenseUseCase?
     ) {
-        self.loginUseCase = loginUseCase ?? LoginUseCaseImpl()
-        self.getLimitsUseCase = getLimitsUseCase ?? GetLimitsUseCaseImpl()
-        self.createWithdrawalUseCase = createWithdrawalUseCase ?? CreateWithdrawalUseCaseImpl()
-        self.dispenseUseCase = dispenseUseCase ?? DispenseUseCaseImpl()
+        let repository = TapCashRepositoryImpl(
+            client: URLSessionHTTPClient(),
+            baseURL: Config.apiBaseUrl!
+        )
+        self.loginUseCase = loginUseCase ?? LoginUseCaseImpl(repository: repository)
+        self.getLimitsUseCase = getLimitsUseCase ?? GetLimitsUseCaseImpl(repository: repository)
+        self.createWithdrawalUseCase = createWithdrawalUseCase ?? CreateWithdrawalUseCaseImpl(repository: repository)
+        self.dispenseUseCase = dispenseUseCase ?? DispenseUseCaseImpl(repository: repository)
     }
 
     func login(email: String, password: String) {

@@ -13,8 +13,8 @@ final class TapCashRepositoryImpl: TapCashRepository {
     private let decoder: JSONDecoder
     private let encoder: JSONEncoder
 
-    init(client: HTTPClient = URLSessionHTTPClient(),
-         baseURL: URL = Config.apiBaseUrl!,
+    init(client: HTTPClient,
+         baseURL: URL,
          decoder: JSONDecoder = JSONDecoder(),
          encoder: JSONEncoder = JSONEncoder()) {
         self.client = client

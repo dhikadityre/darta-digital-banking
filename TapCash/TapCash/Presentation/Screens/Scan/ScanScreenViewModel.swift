@@ -18,7 +18,7 @@ final class ScanScreenViewModel: ObservableObject {
     var onDispenseCompleted: ((DispenseEntity) -> Void)?
     var onCancelled: (() -> Void)?
     
-    init(dispenseUseCase: DispenseUseCase = DispenseUseCaseImpl()) {
+    init(dispenseUseCase: DispenseUseCase) {
         self.dispenseUseCase = dispenseUseCase
     }
     

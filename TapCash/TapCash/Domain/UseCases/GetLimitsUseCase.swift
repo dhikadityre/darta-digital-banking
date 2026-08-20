@@ -14,7 +14,7 @@ protocol GetLimitsUseCase {
 final class GetLimitsUseCaseImpl: GetLimitsUseCase {
     private let repository: TapCashRepository
 
-    init(repository: TapCashRepository = TapCashRepositoryImpl()) {
+    init(repository: TapCashRepository) {
         self.repository = repository
     }
 

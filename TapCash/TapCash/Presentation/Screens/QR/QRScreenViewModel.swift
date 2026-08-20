@@ -27,7 +27,7 @@ final class QRScreenViewModel: ObservableObject {
         ticket: TicketEntity?,
         email: String,
         amountCents: Int,
-        createWithdrawalUseCase: CreateWithdrawalUseCase = CreateWithdrawalUseCaseImpl()
+        createWithdrawalUseCase: CreateWithdrawalUseCase
     ) {
         self.ticket = ticket
         self.email = email

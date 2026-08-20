@@ -11,11 +11,23 @@ struct RootView: View {
     @StateObject private var router = NavigationRouter()
     
     // Dependencies
-    private let loginUseCase: LoginUseCase = LoginUseCaseImpl()
-    private let getLimitsUseCase: GetLimitsUseCase = GetLimitsUseCaseImpl()
-    private let accountUseCase: AccountUseCase = AccountUseCaseImpl()
-    private let createWithdrawalUseCase: CreateWithdrawalUseCase = CreateWithdrawalUseCaseImpl()
-    private let dispenseUseCase: DispenseUseCase = DispenseUseCaseImpl()
+    private let loginUseCase: LoginUseCase
+    private let getLimitsUseCase: GetLimitsUseCase
+    private let accountUseCase: AccountUseCase
+    private let createWithdrawalUseCase: CreateWithdrawalUseCase
+    private let dispenseUseCase: DispenseUseCase
+
+    init() {
+        let repository = TapCashRepositoryImpl(
+            client: URLSessionHTTPClient(),
+            baseURL: Config.apiBaseUrl!
+        )
+        self.loginUseCase = LoginUseCaseImpl(repository: repository)
+        self.getLimitsUseCase = GetLimitsUseCaseImpl(repository: repository)
+        self.accountUseCase = AccountUseCaseImpl(repository: repository)
+        self.createWithdrawalUseCase = CreateWithdrawalUseCaseImpl(repository: repository)
+        self.dispenseUseCase = DispenseUseCaseImpl(repository: repository)
+    }
     
     var body: some View {
         NavigationStack(path: $router.path) {

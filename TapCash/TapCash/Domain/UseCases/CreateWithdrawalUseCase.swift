@@ -15,7 +15,7 @@ protocol CreateWithdrawalUseCase {
 final class CreateWithdrawalUseCaseImpl: CreateWithdrawalUseCase {
     private let repository: TapCashRepository
 
-    init(repository: TapCashRepository = TapCashRepositoryImpl()) {
+    init(repository: TapCashRepository) {
         self.repository = repository
     }
 
