@@ -1,0 +1,76 @@
+//
+//  QRScreenViewModel.swift
+//  TapCash
+//
+//  Created by DHIKA ADITYA ARE on 20/08/26.
+//
+
+import Foundation
+import Combine
+
+@MainActor
+final class QRScreenViewModel: ObservableObject {
+    @Published var ticket: TicketEntity?
+    @Published var remainingSeconds = 0
+    @Published var isRefreshing = false
+    
+    private var refreshed = false
+    private let email: String
+    private let amountCents: Int
+    private let createWithdrawalUseCase: CreateWithdrawalUseCase
+    
+    var onFinished: (() -> Void)?
+    
+    init(
+        ticket: TicketEntity?,
+        email: String,
+        amountCents: Int,
+        createWithdrawalUseCase: CreateWithdrawalUseCase = CreateWithdrawalUseCaseImpl()
+    ) {
+        self.ticket = ticket
+        self.email = email
+        self.amountCents = amountCents
+        self.createWithdrawalUseCase = createWithdrawalUseCase
+        syncRemaining()
+    }
+    
+    func syncRemaining() {
+        guard let expiresAt = ticket?.expiresAt else { return }
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        let date = formatter.date(from: expiresAt) ?? ISO8601DateFormatter().date(from: expiresAt)
+        if let date = date {
+            self.remainingSeconds = max(0, Int(date.timeIntervalSinceNow))
+        } else {
+            self.remainingSeconds = 0
+        }
+    }
+    
+    func tick() {
+        syncRemaining()
+        if remainingSeconds <= 0 && !refreshed {
+            refreshed = true
+            refreshTicket()
+        }
+    }
+    
+    func refreshTicket() {
+        guard !email.isEmpty, amountCents > 0, !isRefreshing else { return }
+        isRefreshing = true
+        Task {
+            do {
+                let fresh = try await createWithdrawalUseCase.execute(email: self.email, amountCents: self.amountCents)
+                self.ticket = fresh
+                self.refreshed = false
+                self.syncRemaining()
+                self.isRefreshing = false
+            } catch {
+                self.isRefreshing = false
+            }
+        }
+    }
+    
+    func finish() {
+        onFinished?()
+    }
+}
