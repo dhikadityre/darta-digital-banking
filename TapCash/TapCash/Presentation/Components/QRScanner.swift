@@ -17,13 +17,17 @@ struct QRScannerView: UIViewControllerRepresentable {
 
     final class Coordinator: NSObject, AVCaptureMetadataOutputObjectsDelegate {
         let onDecoded: (String) -> Void
-        private var handled = false
 
         init(onDecoded: @escaping (String) -> Void) { self.onDecoded = onDecoded }
 
-        func metadataOutput(_ output: AVCaptureMetadataOutput,
-                            didOutput metadataObjects: [AVMetadataObject],
-                            from connection: AVCaptureConnection) {
+        /// Only Running 1 time
+        private var handled = false
+        
+        func metadataOutput(
+            _ output: AVCaptureMetadataOutput,
+            didOutput metadataObjects: [AVMetadataObject],
+            from connection: AVCaptureConnection
+        ) {
             guard !handled,
                   let obj = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
                   let value = obj.stringValue,
@@ -31,6 +35,32 @@ struct QRScannerView: UIViewControllerRepresentable {
             handled = true
             onDecoded(value)
         }
+        
+        /*
+        /// Can Running Multiple Time
+        private var lastPayload: String?
+        private var lastScanTime: Date?
+        
+        func metadataOutput(
+            _ output: AVCaptureMetadataOutput,
+            didOutput metadataObjects: [AVMetadataObject],
+            from connection: AVCaptureConnection
+        ) {
+            guard
+                let obj = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
+                let value = obj.stringValue,
+                value.hasPrefix("TC1.")
+            else { return }
+            
+            if value == lastPayload, let lastTime = lastScanTime, Date().timeIntervalSince(lastTime) < 3.0 {
+                return
+            }
+            
+            lastPayload = value
+            lastScanTime = Date()
+            onDecoded(value)
+        }
+        */
     }
 }
 
