@@ -18,8 +18,10 @@ final class QRScreenViewModel: ObservableObject {
     private let email: String
     private let amountCents: Int
     private let createWithdrawalUseCase: CreateWithdrawalUseCase
+    private var validationTask: Task<Void, Never>?
     
     var onFinished: (() -> Void)?
+    var onWithdrawalUsed: ((WithdrawalValidateEntity) -> Void)?
     
     init(
         ticket: TicketEntity?,
@@ -32,6 +34,7 @@ final class QRScreenViewModel: ObservableObject {
         self.amountCents = amountCents
         self.createWithdrawalUseCase = createWithdrawalUseCase
         syncRemaining()
+        startValidationPolling()
     }
     
     func syncRemaining() {
@@ -64,13 +67,50 @@ final class QRScreenViewModel: ObservableObject {
                 self.refreshed = false
                 self.syncRemaining()
                 self.isRefreshing = false
+                startValidationPolling()
             } catch {
                 self.isRefreshing = false
             }
         }
     }
     
+    func startValidationPolling() {
+        validationTask?.cancel()
+        guard let ticket = ticket else { return }
+        
+        validationTask = Task { [weak self] in
+            while !Task.isCancelled {
+                do {
+                    try await Task.sleep(nanoseconds: 3_000_000_000)
+                } catch {
+                    break
+                }
+                
+                guard !Task.isCancelled else { break }
+                
+                guard let self = self else { break }
+                
+                do {
+                    let validateEntity = try await self.createWithdrawalUseCase.validate(qrPayload: ticket.qrPayload)
+                    if validateEntity.used {
+                        self.validationTask?.cancel()
+                        self.onWithdrawalUsed?(validateEntity)
+                        break
+                    }
+                } catch {
+                    // Ignore errors during polling
+                }
+            }
+        }
+    }
+    
+    func stopValidationPolling() {
+        validationTask?.cancel()
+        validationTask = nil
+    }
+    
     func finish() {
+        stopValidationPolling()
         onFinished?()
     }
 }

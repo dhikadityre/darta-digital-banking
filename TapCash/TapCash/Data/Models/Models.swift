@@ -36,6 +36,22 @@ struct CreateWithdrawalRequest: Encodable {
     let amountCents: Int
 }
 
+struct CreateWithdrawalValidateRequest: Encodable {
+    let qrPayload: String
+    let token: String
+}
+
+struct CreateWithdrawalValidateResponse: Codable {
+    let token: String
+    let qrPayload: String
+    let amountCents: Int
+    let expiresAt: String
+    let transactionId: String
+    let used: Bool
+    let status: String
+    let simulated: Bool
+}
+
 struct TicketResponse: Decodable, Identifiable {
     let token: String
     let qrPayload: String

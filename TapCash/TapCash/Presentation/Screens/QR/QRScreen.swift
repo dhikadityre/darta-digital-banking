@@ -70,6 +70,7 @@ struct QRScreen: View {
         }
         .padding(24)
         .onAppear { viewModel.syncRemaining() }
+        .onDisappear { viewModel.stopValidationPolling() }
         .onChange(of: viewModel.ticket?.token) { _ in viewModel.syncRemaining() }
         .onReceive(tick) { _ in
             viewModel.tick()

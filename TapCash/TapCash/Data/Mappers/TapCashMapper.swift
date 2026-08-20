@@ -51,6 +51,21 @@ extension TicketResponse {
     }
 }
 
+extension CreateWithdrawalValidateResponse {
+    func toEntity() -> WithdrawalValidateEntity {
+        WithdrawalValidateEntity(
+            token: token,
+            qrPayload: qrPayload,
+            amountCents: amountCents,
+            expiresAt: expiresAt,
+            transactionId: transactionId,
+            used: used,
+            status: status,
+            simulated: simulated
+        )
+    }
+}
+
 extension DispenseResponse {
     func toEntity() -> DispenseEntity {
         DispenseEntity(

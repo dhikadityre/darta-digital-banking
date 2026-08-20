@@ -122,6 +122,17 @@ extension RootView {
                 }
             }
         }
+        vm.onWithdrawalUsed = { validateEntity in
+            let dispenseResult = DispenseEntity(
+                status: validateEntity.status,
+                amountCents: validateEntity.amountCents,
+                transactionId: validateEntity.transactionId,
+                remainingBalanceCents: router.sessionBalanceCents - validateEntity.amountCents,
+                dispensedAt: validateEntity.expiresAt,
+                simulated: validateEntity.simulated
+            )
+            router.navigateToResult(result: dispenseResult)
+        }
         return vm
     }
     

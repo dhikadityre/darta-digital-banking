@@ -72,6 +72,19 @@ final class TapCashRepositoryImpl: TapCashRepository {
             throw apiError.toEntity()
         }
     }
+    
+    func createValidateWithdrawal(qrPayload: String) async throws -> WithdrawalValidateEntity {
+        let url = baseURL.appendingPathComponent("/api/withdrawals/validate")
+        let requestBody = CreateWithdrawalValidateRequest(qrPayload: qrPayload, token: TapCashRepositoryImpl.authToken ?? "")
+        let bodyData = try encoder.encode(requestBody)
+        let (data, response) = try await client.post(to: url, data: bodyData, headers: authHeaders)
+        do {
+            let dto: CreateWithdrawalValidateResponse = try RemoteMapper.map(data, response, decoder: decoder)
+            return dto.toEntity()
+        } catch let apiError as ApiError {
+            throw apiError.toEntity()
+        }
+    }
 
     func dispense(qrPayload: String) async throws -> DispenseEntity {
         let url = baseURL.appendingPathComponent("/api/withdrawals/dispense")

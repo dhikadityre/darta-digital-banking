@@ -9,6 +9,7 @@ import Foundation
 
 protocol CreateWithdrawalUseCase {
     func execute(email: String, amountCents: Int) async throws -> TicketEntity
+    func validate(qrPayload: String) async throws -> WithdrawalValidateEntity
 }
 
 final class CreateWithdrawalUseCaseImpl: CreateWithdrawalUseCase {
@@ -20,5 +21,9 @@ final class CreateWithdrawalUseCaseImpl: CreateWithdrawalUseCase {
 
     func execute(email: String, amountCents: Int) async throws -> TicketEntity {
         try await repository.createWithdrawal(email: email, amountCents: amountCents)
+    }
+    
+    func validate(qrPayload: String) async throws -> WithdrawalValidateEntity {
+        try await repository.createValidateWithdrawal(qrPayload: qrPayload)
     }
 }
