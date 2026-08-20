@@ -1,64 +1,105 @@
 import Foundation
 
-/// Networking layer for the TapCash Spring Boot API using async/await URLSession.
-struct APIClient {
+public protocol HTTPClientTask {
+    func cancel()
+}
 
-    /// Base URL of the backend. Use your Mac's LAN IP when running on a physical device.
-    /// The iOS Simulator can reach the host via `http://localhost:8080`.
-    static let baseURL = Config.apiBaseUrl!
+public protocol HTTPClient {
+    typealias Result = Swift.Result<(Data, HTTPURLResponse), Error>
+    
+    @discardableResult
+    func get(from url: URL, completion: @escaping (Result) -> Void) -> HTTPClientTask
+    
+    @discardableResult
+    func post(to url: URL, data: Data?, completion: @escaping (Result) -> Void) -> HTTPClientTask
+}
 
-    private let session: URLSession = .shared
-    private let decoder: JSONDecoder = JSONDecoder()
-    private let encoder: JSONEncoder = JSONEncoder()
-
-    func login(email: String, password: String) async throws -> LoginResponse {
-        try await post("/api/auth/login", body: LoginRequest(email: email.lowercased(), password: password))
+public final class URLSessionHTTPClient: HTTPClient {
+    private let session: URLSession
+    
+    public init(session: URLSession = .shared) {
+        self.session = session
     }
-
-    func account(email: String) async throws -> AccountResponse {
-        try await get("/api/accounts/\(email.lowercased())")
+    
+    private struct UnexpectedValuesRepresentation: Error {}
+    
+    private struct URLSessionTaskWrapper: HTTPClientTask {
+        let wrapped: URLSessionTask
+        
+        func cancel() {
+            wrapped.cancel()
+        }
     }
-
-    func limits(email: String) async throws -> LimitsResponse {
-        try await get("/api/accounts/\(email.lowercased())/limits")
+    
+    @discardableResult
+    public func get(from url: URL, completion: @escaping (HTTPClient.Result) -> Void) -> HTTPClientTask {
+        let task = session.dataTask(with: url) { data, response, error in
+            completion(Result {
+                if let error = error {
+                    throw error
+                } else if let data = data, let response = response as? HTTPURLResponse {
+                    return (data, response)
+                } else {
+                    throw UnexpectedValuesRepresentation()
+                }
+            })
+        }
+        task.resume()
+        return URLSessionTaskWrapper(wrapped: task)
     }
-
-    func createWithdrawal(email: String, amountCents: Int) async throws -> TicketResponse {
-        try await post("/api/withdrawals",
-                       body: CreateWithdrawalRequest(email: email.lowercased(), amountCents: amountCents))
-    }
-
-    func dispense(qrPayload: String) async throws -> DispenseResponse {
-        try await post("/api/withdrawals/dispense", body: RedeemRequest(qrPayload: qrPayload))
-    }
-
-    // MARK: - transport
-
-    private func get<T: Decodable>(_ path: String) async throws -> T {
-        var request = URLRequest(url: Self.baseURL.appendingPathComponent(path))
-        request.httpMethod = "GET"
-        return try await send(request)
-    }
-
-    private func post<B: Encodable, T: Decodable>(_ path: String, body: B) async throws -> T {
-        var request = URLRequest(url: Self.baseURL.appendingPathComponent(path))
+    
+    @discardableResult
+    public func post(to url: URL, data: Data?, completion: @escaping (HTTPClient.Result) -> Void) -> HTTPClientTask {
+        var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = try encoder.encode(body)
-        return try await send(request)
-    }
-
-    private func send<T: Decodable>(_ request: URLRequest) async throws -> T {
-        let (data, response) = try await session.data(for: request)
-        guard let http = response as? HTTPURLResponse else {
-            throw URLError(.badServerResponse)
+        request.httpBody = data
+        
+        let task = session.dataTask(with: request) { data, response, error in
+            completion(Result {
+                if let error = error {
+                    throw error
+                } else if let data = data, let response = response as? HTTPURLResponse {
+                    return (data, response)
+                } else {
+                    throw UnexpectedValuesRepresentation()
+                }
+            })
         }
-        guard (200..<300).contains(http.statusCode) else {
+        task.resume()
+        return URLSessionTaskWrapper(wrapped: task)
+    }
+}
+
+public extension HTTPClient {
+    func get(from url: URL) async throws -> (Data, HTTPURLResponse) {
+        try await withCheckedThrowingContinuation { continuation in
+            get(from: url) { result in
+                continuation.resume(with: result)
+            }
+        }
+    }
+    
+    func post(to url: URL, data: Data?) async throws -> (Data, HTTPURLResponse) {
+        try await withCheckedThrowingContinuation { continuation in
+            post(to: url, data: data) { result in
+                continuation.resume(with: result)
+            }
+        }
+    }
+}
+
+public final class RemoteMapper {
+    private init() {}
+    
+    public static func map<T: Decodable>(_ data: Data, _ response: HTTPURLResponse, decoder: JSONDecoder = JSONDecoder()) throws -> T {
+        guard (200..<300).contains(response.statusCode) else {
             if let apiError = try? decoder.decode(ApiError.self, from: data) {
                 throw apiError
             }
-            throw URLError(.init(rawValue: http.statusCode))
+            throw URLError(.init(rawValue: response.statusCode))
         }
         return try decoder.decode(T.self, from: data)
     }
 }
+
