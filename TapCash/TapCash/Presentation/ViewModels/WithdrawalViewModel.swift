@@ -23,20 +23,33 @@ final class WithdrawalViewModel: ObservableObject {
     @Published var dispenseResult: DispenseResponse?
     @Published var scanError: String?
 
-    private let api = APIClient()
+    private let loginUseCase: LoginUseCase
+    private let getLimitsUseCase: GetLimitsUseCase
+    private let createWithdrawalUseCase: CreateWithdrawalUseCase
+    private let dispenseUseCase: DispenseUseCase
+
+    init(
+        loginUseCase: LoginUseCase?,
+        getLimitsUseCase: GetLimitsUseCase?,
+        createWithdrawalUseCase: CreateWithdrawalUseCase?,
+        dispenseUseCase: DispenseUseCase?
+    ) {
+        self.loginUseCase = loginUseCase ?? LoginUseCaseImpl()
+        self.getLimitsUseCase = getLimitsUseCase ?? GetLimitsUseCaseImpl()
+        self.createWithdrawalUseCase = createWithdrawalUseCase ?? CreateWithdrawalUseCaseImpl()
+        self.dispenseUseCase = dispenseUseCase ?? DispenseUseCaseImpl()
+    }
 
     func login(email: String, password: String) {
         loading = true
         errorMessage = nil
         Task {
             do {
-                let session = try await api.login(email: email, password: password)
-                let account = try await api.account(email: session.email)
-                let limits = try await api.limits(email: session.email)
-                self.email = account.email
-                self.displayName = account.displayName
-                self.balanceCents = account.availableBalanceCents
-                self.limits = limits
+                let result = try await loginUseCase.execute(email: email, password: password)
+                self.email = result.account.email
+                self.displayName = result.account.displayName
+                self.balanceCents = result.account.availableBalanceCents
+                self.limits = result.limits
                 self.loading = false
                 self.route = .home
             } catch {
@@ -48,7 +61,7 @@ final class WithdrawalViewModel: ObservableObject {
 
     func refreshLimits() {
         guard let email else { return }
-        Task { self.limits = try? await api.limits(email: email) }
+        Task { self.limits = try? await getLimitsUseCase.execute(email: email) }
     }
 
     func createWithdrawal(amountCents: Int) {
@@ -58,7 +71,7 @@ final class WithdrawalViewModel: ObservableObject {
         lastAmountCents = amountCents
         Task {
             do {
-                let ticket = try await api.createWithdrawal(email: email, amountCents: amountCents)
+                let ticket = try await createWithdrawalUseCase.execute(email: email, amountCents: amountCents)
                 self.ticket = ticket
                 self.loading = false
                 self.route = .qr
@@ -76,7 +89,7 @@ final class WithdrawalViewModel: ObservableObject {
     func refreshTicket() {
         guard let email, lastAmountCents > 0 else { return }
         Task {
-            if let fresh = try? await api.createWithdrawal(email: email, amountCents: lastAmountCents) {
+            if let fresh = try? await createWithdrawalUseCase.execute(email: email, amountCents: lastAmountCents) {
                 self.ticket = fresh
             }
         }
@@ -94,7 +107,7 @@ final class WithdrawalViewModel: ObservableObject {
         scanError = nil
         Task {
             do {
-                let result = try await api.dispense(qrPayload: qrPayload)
+                let result = try await dispenseUseCase.execute(qrPayload: qrPayload)
                 self.dispenseResult = result
                 self.loading = false
                 self.route = .result

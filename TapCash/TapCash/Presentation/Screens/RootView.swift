@@ -8,7 +8,12 @@
 import SwiftUI
 
 struct RootView: View {
-    @StateObject private var vm = WithdrawalViewModel()
+    @StateObject private var vm = WithdrawalViewModel(
+        loginUseCase: LoginUseCaseImpl(),
+        getLimitsUseCase: GetLimitsUseCaseImpl(),
+        createWithdrawalUseCase: CreateWithdrawalUseCaseImpl(),
+        dispenseUseCase: DispenseUseCaseImpl()
+    )
 
     var body: some View {
         ZStack {
