@@ -13,6 +13,7 @@ struct RootView: View {
     // Dependencies
     private let loginUseCase: LoginUseCase = LoginUseCaseImpl()
     private let getLimitsUseCase: GetLimitsUseCase = GetLimitsUseCaseImpl()
+    private let accountUseCase: AccountUseCase = AccountUseCaseImpl()
     private let createWithdrawalUseCase: CreateWithdrawalUseCase = CreateWithdrawalUseCaseImpl()
     private let dispenseUseCase: DispenseUseCase = DispenseUseCaseImpl()
     
@@ -106,12 +107,15 @@ extension RootView {
         vm.onFinished = {
             Task {
                 if let email = router.sessionEmail {
-                    let limits = try? await getLimitsUseCase.execute(email: email)
+                    async let limits = try? getLimitsUseCase.execute(email: email)
+                    async let account = try? accountUseCase.execute(email: email)
+                    let (resolvedLimits, resolvedAccount) = await (limits, account)
+                    
                     router.navigateToHome(
                         email: email,
-                        displayName: router.sessionDisplayName ?? "",
-                        balanceCents: router.sessionBalanceCents,
-                        limits: limits
+                        displayName: resolvedAccount?.displayName ?? (router.sessionDisplayName ?? ""),
+                        balanceCents: resolvedAccount?.availableBalanceCents ?? router.sessionBalanceCents,
+                        limits: resolvedLimits
                     )
                 } else {
                     router.navigateToLogin()
@@ -145,12 +149,15 @@ extension RootView {
             }
             Task {
                 if let email = router.sessionEmail {
-                    let limits = try? await getLimitsUseCase.execute(email: email)
+                    async let limits = try? getLimitsUseCase.execute(email: email)
+                    async let account = try? accountUseCase.execute(email: email)
+                    let (resolvedLimits, resolvedAccount) = await (limits, account)
+                    
                     router.navigateToHome(
                         email: email,
-                        displayName: router.sessionDisplayName ?? "",
-                        balanceCents: router.sessionBalanceCents,
-                        limits: limits
+                        displayName: resolvedAccount?.displayName ?? (router.sessionDisplayName ?? ""),
+                        balanceCents: resolvedAccount?.availableBalanceCents ?? router.sessionBalanceCents,
+                        limits: resolvedLimits
                     )
                 } else {
                     router.navigateToLogin()

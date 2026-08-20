@@ -8,10 +8,10 @@ public protocol HTTPClient {
     typealias Result = Swift.Result<(Data, HTTPURLResponse), Error>
     
     @discardableResult
-    func get(from url: URL, completion: @escaping (Result) -> Void) -> HTTPClientTask
+    func get(from url: URL, headers: [String: String]?, completion: @escaping (Result) -> Void) -> HTTPClientTask
     
     @discardableResult
-    func post(to url: URL, data: Data?, completion: @escaping (Result) -> Void) -> HTTPClientTask
+    func post(to url: URL, data: Data?, headers: [String: String]?, completion: @escaping (Result) -> Void) -> HTTPClientTask
 }
 
 public final class URLSessionHTTPClient: HTTPClient {
@@ -32,8 +32,14 @@ public final class URLSessionHTTPClient: HTTPClient {
     }
     
     @discardableResult
-    public func get(from url: URL, completion: @escaping (HTTPClient.Result) -> Void) -> HTTPClientTask {
-        let task = session.dataTask(with: url) { data, response, error in
+    public func get(from url: URL, headers: [String: String]?, completion: @escaping (HTTPClient.Result) -> Void) -> HTTPClientTask {
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        headers?.forEach { key, value in
+            request.setValue(value, forHTTPHeaderField: key)
+        }
+        
+        let task = session.dataTask(with: request) { data, response, error in
             completion(Result {
                 if let error = error {
                     throw error
@@ -49,10 +55,13 @@ public final class URLSessionHTTPClient: HTTPClient {
     }
     
     @discardableResult
-    public func post(to url: URL, data: Data?, completion: @escaping (HTTPClient.Result) -> Void) -> HTTPClientTask {
+    public func post(to url: URL, data: Data?, headers: [String: String]?, completion: @escaping (HTTPClient.Result) -> Void) -> HTTPClientTask {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        headers?.forEach { key, value in
+            request.setValue(value, forHTTPHeaderField: key)
+        }
         request.httpBody = data
         
         let task = session.dataTask(with: request) { data, response, error in
@@ -72,17 +81,17 @@ public final class URLSessionHTTPClient: HTTPClient {
 }
 
 public extension HTTPClient {
-    func get(from url: URL) async throws -> (Data, HTTPURLResponse) {
+    func get(from url: URL, headers: [String: String]? = nil) async throws -> (Data, HTTPURLResponse) {
         try await withCheckedThrowingContinuation { continuation in
-            get(from: url) { result in
+            get(from: url, headers: headers) { result in
                 continuation.resume(with: result)
             }
         }
     }
     
-    func post(to url: URL, data: Data?) async throws -> (Data, HTTPURLResponse) {
+    func post(to url: URL, data: Data?, headers: [String: String]? = nil) async throws -> (Data, HTTPURLResponse) {
         try await withCheckedThrowingContinuation { continuation in
-            post(to: url, data: data) { result in
+            post(to: url, data: data, headers: headers) { result in
                 continuation.resume(with: result)
             }
         }

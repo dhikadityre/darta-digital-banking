@@ -1,6 +1,13 @@
 import Foundation
 
 final class TapCashRepositoryImpl: TapCashRepository {
+    private static var authToken: String?
+    
+    private var authHeaders: [String: String]? {
+        guard let token = Self.authToken else { return nil }
+        return ["Authorization": "Bearer \(token)"]
+    }
+
     private let client: HTTPClient
     private let baseURL: URL
     private let decoder: JSONDecoder
@@ -23,7 +30,9 @@ final class TapCashRepositoryImpl: TapCashRepository {
         let (data, response) = try await client.post(to: url, data: bodyData)
         do {
             let dto: LoginResponse = try RemoteMapper.map(data, response, decoder: decoder)
-            return dto.toEntity()
+            let entity = dto.toEntity()
+            Self.authToken = entity.token
+            return entity
         } catch let apiError as ApiError {
             throw apiError.toEntity()
         }
@@ -31,7 +40,7 @@ final class TapCashRepositoryImpl: TapCashRepository {
 
     func getAccount(email: String) async throws -> AccountEntity {
         let url = baseURL.appendingPathComponent("/api/accounts/\(email.lowercased())")
-        let (data, response) = try await client.get(from: url)
+        let (data, response) = try await client.get(from: url, headers: authHeaders)
         do {
             let dto: AccountResponse = try RemoteMapper.map(data, response, decoder: decoder)
             return dto.toEntity()
@@ -42,7 +51,7 @@ final class TapCashRepositoryImpl: TapCashRepository {
 
     func getLimits(email: String) async throws -> LimitsEntity {
         let url = baseURL.appendingPathComponent("/api/accounts/\(email.lowercased())/limits")
-        let (data, response) = try await client.get(from: url)
+        let (data, response) = try await client.get(from: url, headers: authHeaders)
         do {
             let dto: LimitsResponse = try RemoteMapper.map(data, response, decoder: decoder)
             return dto.toEntity()
@@ -55,7 +64,7 @@ final class TapCashRepositoryImpl: TapCashRepository {
         let url = baseURL.appendingPathComponent("/api/withdrawals")
         let requestBody = CreateWithdrawalRequest(email: email.lowercased(), amountCents: amountCents)
         let bodyData = try encoder.encode(requestBody)
-        let (data, response) = try await client.post(to: url, data: bodyData)
+        let (data, response) = try await client.post(to: url, data: bodyData, headers: authHeaders)
         do {
             let dto: TicketResponse = try RemoteMapper.map(data, response, decoder: decoder)
             return dto.toEntity()
@@ -68,7 +77,7 @@ final class TapCashRepositoryImpl: TapCashRepository {
         let url = baseURL.appendingPathComponent("/api/withdrawals/dispense")
         let requestBody = RedeemRequest(qrPayload: qrPayload)
         let bodyData = try encoder.encode(requestBody)
-        let (data, response) = try await client.post(to: url, data: bodyData)
+        let (data, response) = try await client.post(to: url, data: bodyData, headers: authHeaders)
         do {
             let dto: DispenseResponse = try RemoteMapper.map(data, response, decoder: decoder)
             return dto.toEntity()
@@ -77,5 +86,3 @@ final class TapCashRepositoryImpl: TapCashRepository {
         }
     }
 }
-
-
