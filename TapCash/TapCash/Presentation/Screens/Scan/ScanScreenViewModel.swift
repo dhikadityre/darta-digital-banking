@@ -31,6 +31,9 @@ final class ScanScreenViewModel: ObservableObject {
                 let result = try await dispenseUseCase.execute(qrPayload: qrPayload)
                 self.loading = false
                 self.onDispenseCompleted?(result)
+            } catch let apiError as ApiErrorEntity {
+                self.loading = false
+                self.scanError = apiError.message
             } catch {
                 self.loading = false
                 self.scanError = "Code rejected. It may be used, expired, or invalid."
