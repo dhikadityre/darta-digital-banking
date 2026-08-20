@@ -39,5 +39,6 @@ struct LoginScreen: View {
             Spacer()
         }
         .padding(24)
+        .dismissKeyboardOnTapBackground()
     }
 }
