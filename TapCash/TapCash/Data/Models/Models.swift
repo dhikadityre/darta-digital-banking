@@ -1,5 +1,16 @@
 import Foundation
 
+struct RefreshRequest: Encodable {
+    let refreshToken: String
+}
+
+struct RefreshResponse: Decodable {
+    let email: String
+    let displayName: String
+    let token: String
+    let refreshToken: String
+}
+
 struct LoginRequest: Encodable {
     let email: String
     let password: String
@@ -9,6 +20,7 @@ struct LoginResponse: Decodable {
     let email: String
     let displayName: String
     let token: String
+    let refreshToken: String
 }
 
 struct AccountResponse: Decodable {

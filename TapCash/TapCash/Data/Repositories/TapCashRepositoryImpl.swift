@@ -1,7 +1,10 @@
 import Foundation
 
 final class TapCashRepositoryImpl: TapCashRepository {
-    private static var authToken: String?
+    private static var authToken: String? {
+        get { UserDefaults.standard.string(forKey: "auth_token") }
+        set { UserDefaults.standard.set(newValue, forKey: "auth_token") }
+    }
     
     private var authHeaders: [String: String]? {
         guard let token = Self.authToken else { return nil }
@@ -32,6 +35,7 @@ final class TapCashRepositoryImpl: TapCashRepository {
             let dto: LoginResponse = try RemoteMapper.map(data, response, decoder: decoder)
             let entity = dto.toEntity()
             Self.authToken = entity.token
+            UserDefaults.standard.set(dto.refreshToken, forKey: "refresh_token")
             return entity
         } catch let apiError as ApiError {
             throw apiError.toEntity()
