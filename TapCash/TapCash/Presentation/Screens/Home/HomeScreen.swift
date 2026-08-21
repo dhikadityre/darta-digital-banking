@@ -45,10 +45,7 @@ extension HomeScreen {
             Button("Scan a code (Cashier mode)") {
                 viewModel.onScanSelected?()
             }
-            .font(.headline)
-            .foregroundStyle(Palette.navy)
-            .frame(maxWidth: .infinity, minHeight: 52)
-            .overlay(RoundedRectangle(cornerRadius: 8).stroke(Palette.navy, lineWidth: 1))
+            .buttonStyle(SecondaryButtonStyle())
         }
     }
     

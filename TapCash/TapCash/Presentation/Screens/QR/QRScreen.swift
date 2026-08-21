@@ -62,9 +62,7 @@ struct QRScreen: View {
                 Button("Done") {
                     viewModel.finish()
                 }
-                .font(.headline).foregroundStyle(Palette.navy)
-                .frame(maxWidth: .infinity, minHeight: 52)
-                .overlay(RoundedRectangle(cornerRadius: 8).stroke(Palette.navy, lineWidth: 1))
+                .buttonStyle(SecondaryButtonStyle())
             }
         }
         .padding(24)
