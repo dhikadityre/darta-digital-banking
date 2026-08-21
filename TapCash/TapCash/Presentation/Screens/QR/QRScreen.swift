@@ -10,7 +10,6 @@ import Combine
 
 struct QRScreen: View {
     @ObservedObject var viewModel: QRScreenViewModel
-    private let tick = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     var body: some View {
         VStack(spacing: 16) {
@@ -72,9 +71,6 @@ struct QRScreen: View {
         .onAppear { viewModel.syncRemaining() }
         .onDisappear { viewModel.stopValidationPolling() }
         .onChange(of: viewModel.ticket?.token) { _ in viewModel.syncRemaining() }
-        .onReceive(tick) { _ in
-            viewModel.tick()
-        }
     }
 
     private var timeString: String {

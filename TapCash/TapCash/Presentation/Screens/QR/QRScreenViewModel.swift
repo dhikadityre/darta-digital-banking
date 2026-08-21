@@ -19,6 +19,7 @@ final class QRScreenViewModel: ObservableObject {
     private let amountCents: Int
     private let createWithdrawalUseCase: CreateWithdrawalUseCase
     private var validationTask: Task<Void, Never>?
+    private var timer: AnyCancellable?
     
     var onFinished: (() -> Void)?
     var onWithdrawalUsed: ((WithdrawalValidateEntity) -> Void)?
@@ -35,6 +36,7 @@ final class QRScreenViewModel: ObservableObject {
         self.createWithdrawalUseCase = createWithdrawalUseCase
         syncRemaining()
         startValidationPolling()
+        startTimer()
     }
     
     func syncRemaining() {
@@ -51,11 +53,23 @@ final class QRScreenViewModel: ObservableObject {
         }
     }
     
+    private func startTimer() {
+        timer = Timer.publish(every: 1, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                self.tick()
+            }
+    }
+
     func tick() {
         syncRemaining()
         if remainingSeconds <= 0 && !refreshed {
             refreshed = true
-            refreshTicket()
+            Task {
+                try? await Task.sleep(nanoseconds: 2_000_000_000)
+                self.refreshTicket()
+            }
         }
     }
     
@@ -72,6 +86,7 @@ final class QRScreenViewModel: ObservableObject {
                 startValidationPolling()
             } catch {
                 self.isRefreshing = false
+                self.refreshed = false
             }
         }
     }
