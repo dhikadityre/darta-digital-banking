@@ -16,7 +16,7 @@ struct ResultScreen: View {
                 Spacer()
                 Image(systemName: "checkmark.circle.fill")
                     .font(.system(size: 56)).foregroundStyle(Palette.green)
-                Eyebrow(text: "Withdrawal complete")
+                EyebrowView(text: "Withdrawal complete")
                 Text("Cash dispensed").font(.title.bold()).foregroundStyle(Palette.ink)
                 Text(result.amountCents.rupiah)
                     .font(.system(size: 34, weight: .bold, design: .monospaced))

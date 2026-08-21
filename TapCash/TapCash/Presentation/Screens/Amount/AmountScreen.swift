@@ -12,13 +12,13 @@ struct AmountScreen: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Eyebrow(text: "Step 02 / Amount")
+            EyebrowView(text: "Step 02 / Amount")
             Text("How much cash?")
                 .font(.title.bold())
                 .foregroundStyle(Palette.ink)
 
             if let limits = viewModel.limits {
-                LimitsCard(limits: limits)
+                LimitsCardView(limits: limits)
             }
 
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {

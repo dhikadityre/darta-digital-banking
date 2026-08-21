@@ -15,7 +15,7 @@ struct QRScreen: View {
         VStack(spacing: 16) {
             if let ticket = viewModel.ticket {
                 let expired = viewModel.remainingSeconds <= 0
-                Eyebrow(text: "Show this code at the Cashier")
+                EyebrowView(text: "Show this code at the Cashier")
                 Text(ticket.amountCents.rupiah)
                     .font(.system(size: 38, weight: .bold, design: .monospaced))
                     .foregroundStyle(Palette.ink)

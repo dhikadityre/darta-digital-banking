@@ -14,7 +14,7 @@ struct ScanScreen: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            Eyebrow(text: "Scan a code")
+            EyebrowView(text: "Scan a code")
             Text("Point at a TapCash QR").font(.title2.bold()).foregroundStyle(Palette.ink)
 
             switch status {

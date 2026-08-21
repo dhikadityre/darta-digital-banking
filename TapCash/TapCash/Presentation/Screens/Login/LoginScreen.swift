@@ -12,7 +12,7 @@ struct LoginScreen: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Eyebrow(text: "TapCash")
+            EyebrowView(text: "TapCash")
             Text("Cardless cash")
                 .font(.system(size: 40, weight: .bold, design: .rounded))
                 .foregroundStyle(Palette.ink)

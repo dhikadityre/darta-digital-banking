@@ -25,7 +25,7 @@
 //                .font(.title.bold())
 //                .foregroundStyle(Palette.ink)
 //
-//            if let limits = vm.limits { LimitsCard(limits: limits) }
+//            if let limits = vm.limits { LimitsCardView(limits: limits) }
 //
 //            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
 //                ForEach(options, id: \.self) { amount in

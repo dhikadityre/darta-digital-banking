@@ -1,5 +1,5 @@
 //
-//  Eyebrow.swift
+//  EyebrowView.swift
 //  TapCash
 //
 //  Created by DHIKA ADITYA ARE on 21/08/26.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Eyebrow: View {
+struct EyebrowView: View {
     let text: String
     
     var body: some View {

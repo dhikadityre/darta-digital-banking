@@ -1,5 +1,5 @@
 //
-//  LimitsCard.swift
+//  LimitsCardView.swift
 //  TapCash
 //
 //  Created by DHIKA ADITYA ARE on 19/08/26.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LimitsCard: View {
+struct LimitsCardView: View {
     let limits: LimitsEntity
     
     private var fraction: Double {
@@ -17,7 +17,7 @@ struct LimitsCard: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Eyebrow(text: "Withdrawal limits")
+            EyebrowView(text: "Withdrawal limits")
             row("Per transaction", "\(limits.minCents.rupiah) – \(limits.maxCents.rupiah)")
             row("Daily limit", limits.dailyLimitCents.rupiah)
             row("Used today", limits.withdrawnTodayCents.rupiah)
