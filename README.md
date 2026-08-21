@@ -2,7 +2,7 @@
 
 Native iOS client. It logs in, shows the SIMULATED balance and **withdrawal limits**, lets the
 customer choose an amount, asks the Spring Boot backend to mint a one-time QR ticket, and renders
-that server-signed payload as a QR code (CoreImage). It also has an **ATM mode** that scans a code
+that server-signed payload as a QR code (CoreImage). It also has an **Cashier mode** that scans a code
 live with the camera and redeems it.
 
 ## Features
@@ -11,18 +11,39 @@ live with the camera and redeems it.
   (per-transaction range, daily limit, used today, remaining) and disables over-limit amounts.
 - **Live countdown + auto-refresh**: the QR screen counts down from the ticket's absolute expiry
   and silently mints a fresh code when it expires, so an expired code never confuses the customer.
-- **Camera scanning (ATM mode)**: `AVCaptureMetadataOutput` decodes a `TC1.…` QR and calls
+- **Camera scanning (Cashier mode)**: `AVCaptureMetadataOutput` decodes a `TC1.…` QR and calls
   `/api/withdrawals/dispense`. Permission is requested contextually with a graceful
   denied → "Open Settings" fallback.
 
 ## Architecture
 
 ```
-TapCashApp ──> RootView ──> Login / Home / Amount / QR / Scan / Result
-    views  ──> WithdrawalViewModel (@MainActor, ObservableObject)
-    net    ──> APIClient (async/await URLSession) ──> Spring Boot API
-    render ──> QRCode (CIFilter) draws the payload; QRScannerView (AVFoundation) reads it
+TapCash/
+├── App/
+│   ├── TapCashApp.swift             # Entry point utama aplikasi SwiftUI
+│   └── AppDelegate.swift            # Penanganan siklus hidup aplikasi (Lifecycle)
+│
+├── Domain/                          # Bisnis Logik Inti (Bebas dari framework luar)
+│   ├── Entities/                    # Model bisnis inti (Swift struct murni)
+│   ├── Repositories/                # Kontrak/Protokol Repository (Dependency Inversion)
+│   └── UseCases/                    # Unit logika bisnis spesifik (Interactors)
+│
+├── Data/                            # Infrastruktur Data & Sumber Eksternal
+│   ├── Network/                     # APIClient, TokenManager (Auth), & Konfigurasi API
+│   ├── Models/                      # DTOs (Data Transfer Objects) untuk Request/Response API
+│   ├── Mappers/                     # Mapper untuk konversi DTO ke Domain Entity
+│   └── Repositories/                # Implementasi konkret dari kontrak Domain Repository
+│
+├── Presentation/                    # User Interface & Alur Tampilan
+│   ├── Navigation/                  # Router navigasi berbasis SwiftUI NavigationStack
+│   ├── Screens/                     # Layar (View & ViewModel) per fitur (Login, Home, Scan, dll)
+│   │   ├── RootView.swift           # DI Container & Router Coordinator utama
+│   │   └── [Feature]/               # Folder per halaman (View & ViewModel)
+│   └── Components/                  # Reusable UI widgets & Theme Styling
+│
+└── Utilities/                       # Helpers, Extensions, & Custom Formatters
 ```
+
 
 ## Create the Xcode project
 
