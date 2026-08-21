@@ -20,6 +20,7 @@ struct QRScannerView: UIViewControllerRepresentable {
 
         init(onDecoded: @escaping (String) -> Void) { self.onDecoded = onDecoded }
 
+        /*
         /// Only Running 1 time
         private var handled = false
         
@@ -35,8 +36,8 @@ struct QRScannerView: UIViewControllerRepresentable {
             handled = true
             onDecoded(value)
         }
+        */
         
-        /*
         /// Can Running Multiple Time
         private var lastPayload: String?
         private var lastScanTime: Date?
@@ -60,7 +61,6 @@ struct QRScannerView: UIViewControllerRepresentable {
             lastScanTime = Date()
             onDecoded(value)
         }
-        */
     }
 }
 
