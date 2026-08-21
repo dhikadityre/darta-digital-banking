@@ -1,17 +1,103 @@
 import Foundation
+import Security
+
+public protocol TokenStorage {
+    var accessToken: String? { get }
+    var refreshToken: String? { get }
+    func save(accessToken: String, refreshToken: String)
+    func clear()
+}
+
+public final class KeychainTokenStorage: TokenStorage {
+    private let service = "com.mediatamaidtech.tapcash"
+    private let accountAccessToken = "accessToken"
+    private let accountRefreshToken = "refreshToken"
+    
+    public init() {}
+    
+    public var accessToken: String? {
+        read(forKey: accountAccessToken)
+    }
+    
+    public var refreshToken: String? {
+        read(forKey: accountRefreshToken)
+    }
+    
+    public func save(accessToken: String, refreshToken: String) {
+        write(accessToken, forKey: accountAccessToken)
+        write(refreshToken, forKey: accountRefreshToken)
+    }
+    
+    public func clear() {
+        delete(forKey: accountAccessToken)
+        delete(forKey: accountRefreshToken)
+    }
+    
+    private func write(_ value: String, forKey key: String) {
+        guard let data = value.data(using: .utf8) else { return }
+        
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service,
+            kSecAttrAccount as String: key
+        ]
+        
+        let attributes: [String: Any] = [
+            kSecValueData as String: data
+        ]
+        
+        let status = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
+        if status == errSecItemNotFound {
+            var newQuery = query
+            newQuery[kSecValueData as String] = data
+            SecItemAdd(newQuery as CFDictionary, nil)
+        }
+    }
+    
+    private func read(forKey key: String) -> String? {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service,
+            kSecAttrAccount as String: key,
+            kSecReturnData as String: true,
+            kSecMatchLimit as String: kSecMatchLimitOne
+        ]
+        
+        var dataTypeRef: AnyObject?
+        let status = SecItemCopyMatching(query as CFDictionary, &dataTypeRef)
+        
+        if status == errSecSuccess, let data = dataTypeRef as? Data {
+            return String(data: data, encoding: .utf8)
+        }
+        return nil
+    }
+    
+    private func delete(forKey key: String) {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service,
+            kSecAttrAccount as String: key
+        ]
+        SecItemDelete(query as CFDictionary)
+    }
+}
 
 public final class TokenManager {
     public static let shared = TokenManager()
     
-    private init() {}
+    private let storage: TokenStorage
+    
+    public init(storage: TokenStorage = KeychainTokenStorage()) {
+        self.storage = storage
+    }
     
     public var token: String? {
-        get { UserDefaults.standard.string(forKey: "auth_token") }
+        get { storage.accessToken }
         set {
             if let newValue = newValue {
-                UserDefaults.standard.set(newValue, forKey: "auth_token")
+                storage.save(accessToken: newValue, refreshToken: storage.refreshToken ?? "")
             } else {
-                UserDefaults.standard.removeObject(forKey: "auth_token")
+                storage.save(accessToken: "", refreshToken: storage.refreshToken ?? "")
             }
         }
     }
@@ -22,18 +108,17 @@ public final class TokenManager {
     }
     
     public var refreshToken: String? {
-        get { UserDefaults.standard.string(forKey: "refresh_token") }
+        get { storage.refreshToken }
         set {
             if let newValue = newValue {
-                UserDefaults.standard.set(newValue, forKey: "refresh_token")
+                storage.save(accessToken: storage.accessToken ?? "", refreshToken: newValue)
             } else {
-                UserDefaults.standard.removeObject(forKey: "refresh_token")
+                storage.save(accessToken: storage.accessToken ?? "", refreshToken: "")
             }
         }
     }
     
     public func clear() {
-        UserDefaults.standard.removeObject(forKey: "auth_token")
-        UserDefaults.standard.removeObject(forKey: "refresh_token")
+        storage.clear()
     }
 }
