@@ -42,7 +42,7 @@ extension HomeScreen {
             }
             .buttonStyle(PrimaryButtonStyle())
             
-            Button("Scan a code (ATM mode)") {
+            Button("Scan a code (Cashier mode)") {
                 viewModel.onScanSelected?()
             }
             .font(.headline)

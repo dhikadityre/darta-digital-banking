@@ -26,7 +26,7 @@
 //        VStack(spacing: 16) {
 //            if let ticket = vm.ticket {
 //                let expired = remaining <= 0
-//                Eyebrow(text: "Show this code at the ATM")
+//                Eyebrow(text: "Show this code at the Cashier")
 //                Text(ticket.amountCents.usd)
 //                    .font(.system(size: 38, weight: .bold, design: .monospaced))
 //                    .foregroundStyle(Palette.ink)

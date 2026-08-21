@@ -19,7 +19,7 @@ final class WithdrawalViewModel: ObservableObject {
     @Published var ticket: TicketEntity?
     @Published var lastAmountCents: Int = 0
 
-    // ATM (scan & redeem) mode
+    // Cashier (scan & redeem) mode
     @Published var dispenseResult: DispenseEntity?
     @Published var scanError: String?
 

@@ -20,7 +20,7 @@
 //            Spacer()
 //            Button("Withdraw cash") { vm.route = .amount }
 //                .buttonStyle(PrimaryButtonStyle())
-//            Button("Scan a code (ATM mode)") { vm.startScan() }
+//            Button("Scan a code (Cashier mode)") { vm.startScan() }
 //                .font(.headline)
 //                .foregroundStyle(Palette.navy)
 //                .frame(maxWidth: .infinity, minHeight: 52)
