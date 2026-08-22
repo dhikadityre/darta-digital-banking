@@ -134,3 +134,8 @@ BuildTools/.swiftpm
 
 
 *.xcuserstate
+
+## XCConfig ###
+TapCash/XCConfig/
+TapCash/XCConfig_backup*
+TapCash/XCConfig.zip
