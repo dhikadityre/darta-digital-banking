@@ -7,23 +7,23 @@
 
 import Foundation
 
-protocol CreateWithdrawalUseCase {
+public protocol CreateWithdrawalUseCase {
     func execute(email: String, amountCents: Int) async throws -> TicketEntity
     func validate(qrPayload: String) async throws -> WithdrawalValidateEntity
 }
 
-final class CreateWithdrawalUseCaseImpl: CreateWithdrawalUseCase {
+public final class CreateWithdrawalUseCaseImpl: CreateWithdrawalUseCase {
     private let repository: TapCashRepository
 
-    init(repository: TapCashRepository) {
+    public init(repository: TapCashRepository) {
         self.repository = repository
     }
 
-    func execute(email: String, amountCents: Int) async throws -> TicketEntity {
+    public func execute(email: String, amountCents: Int) async throws -> TicketEntity {
         try await repository.createWithdrawal(email: email, amountCents: amountCents)
     }
     
-    func validate(qrPayload: String) async throws -> WithdrawalValidateEntity {
+    public func validate(qrPayload: String) async throws -> WithdrawalValidateEntity {
         try await repository.createValidateWithdrawal(qrPayload: qrPayload)
     }
 }

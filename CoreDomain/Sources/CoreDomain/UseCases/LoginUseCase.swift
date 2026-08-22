@@ -7,18 +7,18 @@
 
 import Foundation
 
-protocol LoginUseCase {
+public protocol LoginUseCase {
     func execute(email: String, password: String) async throws -> (account: AccountEntity, limits: LimitsEntity)
 }
 
-final class LoginUseCaseImpl: LoginUseCase {
+public final class LoginUseCaseImpl: LoginUseCase {
     private let repository: TapCashRepository
 
-    init(repository: TapCashRepository) {
+    public init(repository: TapCashRepository) {
         self.repository = repository
     }
 
-    func execute(email: String, password: String) async throws -> (account: AccountEntity, limits: LimitsEntity) {
+    public func execute(email: String, password: String) async throws -> (account: AccountEntity, limits: LimitsEntity) {
         let session = try await repository.login(email: email, password: password)
         let account = try await repository.getAccount(email: session.email)
         let limits = try await repository.getLimits(email: session.email)

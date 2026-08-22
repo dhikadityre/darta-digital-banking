@@ -7,18 +7,18 @@
 
 import Foundation
 
-protocol DispenseUseCase {
+public protocol DispenseUseCase {
     func execute(qrPayload: String) async throws -> DispenseEntity
 }
 
-final class DispenseUseCaseImpl: DispenseUseCase {
+public final class DispenseUseCaseImpl: DispenseUseCase {
     private let repository: TapCashRepository
 
-    init(repository: TapCashRepository) {
+    public init(repository: TapCashRepository) {
         self.repository = repository
     }
 
-    func execute(qrPayload: String) async throws -> DispenseEntity {
+    public func execute(qrPayload: String) async throws -> DispenseEntity {
         try await repository.dispense(qrPayload: qrPayload)
     }
 }

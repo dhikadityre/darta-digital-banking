@@ -7,18 +7,18 @@
 
 import Foundation
 
-protocol AccountUseCase {
+public protocol AccountUseCase {
     func execute(email: String) async throws -> AccountEntity
 }
 
-final class AccountUseCaseImpl: AccountUseCase {
+public final class AccountUseCaseImpl: AccountUseCase {
     private let repository: TapCashRepository
 
-    init(repository: TapCashRepository) {
+    public init(repository: TapCashRepository) {
         self.repository = repository
     }
 
-    func execute(email: String) async throws -> AccountEntity {
+    public func execute(email: String) async throws -> AccountEntity {
         let account = try await repository.getAccount(email: email)
         return account
     }
