@@ -11,22 +11,22 @@ public protocol HTTPClientTask {
     func cancel()
 }
 
-public protocol HTTPClient {
+public protocol HTTPClient: Sendable {
     typealias Result = Swift.Result<(Data, HTTPURLResponse), Error>
     
     @discardableResult
-    func get(from url: URL, headers: [String: String]?, completion: @escaping (Result) -> Void) -> HTTPClientTask
+    func get(from url: URL, headers: [String: String]?, completion: @escaping @Sendable (Result) -> Void) -> HTTPClientTask
     
     @discardableResult
-    func post(to url: URL, data: Data?, headers: [String: String]?, completion: @escaping (Result) -> Void) -> HTTPClientTask
+    func post(to url: URL, data: Data?, headers: [String: String]?, completion: @escaping @Sendable (Result) -> Void) -> HTTPClientTask
 }
 
-public final class URLSessionHTTPClient: HTTPClient {
+public final class URLSessionHTTPClient: HTTPClient, @unchecked Sendable {
     private let session: URLSession
     
     private let lock = NSLock()
     private var isRefreshing = false
-    private var refreshQueue: [() -> Void] = []
+    private var refreshQueue: [@Sendable () -> Void] = []
     
     public init(session: URLSession = .shared) {
         self.session = session
@@ -42,7 +42,7 @@ public final class URLSessionHTTPClient: HTTPClient {
         }
     }
     
-    private func execute(_ request: URLRequest, completion: @escaping (HTTPClient.Result) -> Void) -> HTTPClientTask {
+    private func execute(_ request: URLRequest, completion: @escaping @Sendable (HTTPClient.Result) -> Void) -> HTTPClientTask {
         let task = session.dataTask(with: request) { [weak self] data, response, error in
             guard let self = self else { return }
             
@@ -51,7 +51,7 @@ public final class URLSessionHTTPClient: HTTPClient {
                 if path.contains("/api/auth/login") || path.contains("/api/auth/refresh") {
                     completion(Swift.Result {
                         if let error = error { throw error }
-                        guard let data = data, let response = response as? HTTPURLResponse else {
+                        guard let data = data else {
                             throw UnexpectedValuesRepresentation()
                         }
                         return (data, response)
@@ -65,7 +65,7 @@ public final class URLSessionHTTPClient: HTTPClient {
                 guard !expiredToken.isEmpty else {
                     completion(Swift.Result {
                         if let error = error { throw error }
-                        guard let data = data, let response = response as? HTTPURLResponse else {
+                        guard let data = data else {
                             throw UnexpectedValuesRepresentation()
                         }
                         return (data, response)
@@ -92,7 +92,7 @@ public final class URLSessionHTTPClient: HTTPClient {
                     case .failure:
                         completion(Swift.Result {
                             if let error = error { throw error }
-                            guard let data = data, let response = response as? HTTPURLResponse else {
+                            guard let data = data else {
                                 throw UnexpectedValuesRepresentation()
                             }
                             return (data, response)
@@ -115,7 +115,7 @@ public final class URLSessionHTTPClient: HTTPClient {
     
     private func handleUnauthorizedError(
         expiredToken: String,
-        completion: @escaping (Swift.Result<String, Error>) -> Void
+        completion: @escaping @Sendable (Swift.Result<String, Error>) -> Void
     ) {
         lock.lock()
         
@@ -173,7 +173,7 @@ public final class URLSessionHTTPClient: HTTPClient {
         }
     }
     
-    private func performTokenRefresh(expiredToken: String, completion: @escaping (Swift.Result<(String, String), Error>) -> Void) {
+    private func performTokenRefresh(expiredToken: String, completion: @escaping @Sendable (Swift.Result<(String, String), Error>) -> Void) {
         guard let baseURL = Config.apiBaseUrl else {
             completion(.failure(URLError(.badURL)))
             return
@@ -220,7 +220,7 @@ public final class URLSessionHTTPClient: HTTPClient {
     }
     
     @discardableResult
-    public func get(from url: URL, headers: [String: String]?, completion: @escaping (HTTPClient.Result) -> Void) -> HTTPClientTask {
+    public func get(from url: URL, headers: [String: String]?, completion: @escaping @Sendable (HTTPClient.Result) -> Void) -> HTTPClientTask {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         headers?.forEach { key, value in
@@ -230,7 +230,7 @@ public final class URLSessionHTTPClient: HTTPClient {
     }
     
     @discardableResult
-    public func post(to url: URL, data: Data?, headers: [String: String]?, completion: @escaping (HTTPClient.Result) -> Void) -> HTTPClientTask {
+    public func post(to url: URL, data: Data?, headers: [String: String]?, completion: @escaping @Sendable (HTTPClient.Result) -> Void) -> HTTPClientTask {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")

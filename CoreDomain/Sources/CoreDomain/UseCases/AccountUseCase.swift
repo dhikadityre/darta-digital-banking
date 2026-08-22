@@ -7,11 +7,11 @@
 
 import Foundation
 
-public protocol AccountUseCase {
+public protocol AccountUseCase: Sendable {
     func execute(email: String) async throws -> AccountEntity
 }
 
-public final class AccountUseCaseImpl: AccountUseCase {
+public final class AccountUseCaseImpl: AccountUseCase, @unchecked Sendable {
     private let repository: TapCashRepository
 
     public init(repository: TapCashRepository) {

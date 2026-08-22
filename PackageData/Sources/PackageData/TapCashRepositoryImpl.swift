@@ -8,7 +8,7 @@
 import Foundation
 import CoreDomain
 
-public final class TapCashRepositoryImpl: TapCashRepository {
+public final class TapCashRepositoryImpl: TapCashRepository, @unchecked Sendable {
     private var authHeaders: [String: String]? {
         guard let token = TokenManager.shared.token else { return nil }
         return ["Authorization": "Bearer \(token)"]

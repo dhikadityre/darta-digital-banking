@@ -7,11 +7,11 @@
 
 import Foundation
 
-public protocol GetLimitsUseCase {
+public protocol GetLimitsUseCase: Sendable {
     func execute(email: String) async throws -> LimitsEntity
 }
 
-public final class GetLimitsUseCaseImpl: GetLimitsUseCase {
+public final class GetLimitsUseCaseImpl: GetLimitsUseCase, @unchecked Sendable {
     private let repository: TapCashRepository
 
     public init(repository: TapCashRepository) {

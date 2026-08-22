@@ -7,12 +7,12 @@
 
 import Foundation
 
-public protocol CreateWithdrawalUseCase {
+public protocol CreateWithdrawalUseCase: Sendable {
     func execute(email: String, amountCents: Int) async throws -> TicketEntity
     func validate(qrPayload: String) async throws -> WithdrawalValidateEntity
 }
 
-public final class CreateWithdrawalUseCaseImpl: CreateWithdrawalUseCase {
+public final class CreateWithdrawalUseCaseImpl: CreateWithdrawalUseCase, @unchecked Sendable {
     private let repository: TapCashRepository
 
     public init(repository: TapCashRepository) {

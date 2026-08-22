@@ -7,11 +7,11 @@
 
 import Foundation
 
-public protocol LoginUseCase {
+public protocol LoginUseCase: Sendable {
     func execute(email: String, password: String) async throws -> (account: AccountEntity, limits: LimitsEntity)
 }
 
-public final class LoginUseCaseImpl: LoginUseCase {
+public final class LoginUseCaseImpl: LoginUseCase, @unchecked Sendable {
     private let repository: TapCashRepository
 
     public init(repository: TapCashRepository) {

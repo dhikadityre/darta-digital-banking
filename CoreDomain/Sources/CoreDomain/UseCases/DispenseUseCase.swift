@@ -7,11 +7,11 @@
 
 import Foundation
 
-public protocol DispenseUseCase {
+public protocol DispenseUseCase: Sendable {
     func execute(qrPayload: String) async throws -> DispenseEntity
 }
 
-public final class DispenseUseCaseImpl: DispenseUseCase {
+public final class DispenseUseCaseImpl: DispenseUseCase, @unchecked Sendable {
     private let repository: TapCashRepository
 
     public init(repository: TapCashRepository) {
