@@ -13,7 +13,12 @@ extension View {
         _ handler: @escaping TypeAliases.VoidHandler = { return }
     ) -> some View {
         self.onTapGesture {
-            UIApplication.shared.windows.forEach { $0.endEditing(true) }
+            UIApplication.shared.connectedScenes
+                .compactMap { $0 as? UIWindowScene }
+                .first { $0.activationState == .foregroundActive }?
+                .windows
+                .first?
+                .endEditing(true)
             handler()
         }
     }
@@ -25,7 +30,12 @@ extension View {
             Color.clear
                 .contentShape(Rectangle())
                 .onTapGesture {
-                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                    UIApplication.shared.sendAction(
+                        #selector(UIResponder.resignFirstResponder),
+                        to: nil,
+                        from: nil,
+                        for: nil
+                    )
                     handler()
                 }
         )
