@@ -1,16 +1,17 @@
 #!/bin/bash
 
-# Target directory and Zip file paths
+# Target directory and Zip file paths (relative to script location, going up one level to TapCash)
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-TARGET_DIR="$SCRIPT_DIR/XCConfig"
-ZIP_FILE="$SCRIPT_DIR/XCConfig.zip"
+PARENT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+TARGET_DIR="$PARENT_DIR/XCConfig"
+ZIP_FILE="$PARENT_DIR/XCConfig.zip"
 
 echo "=== Local XCConfig Setup Script ==="
 
 # 1. Check if XCConfig.zip exists
 if [ ! -f "$ZIP_FILE" ]; then
     echo "Error: Berkas '$ZIP_FILE' tidak ditemukan!"
-    echo "Silakan copy-paste berkas 'XCConfig.zip' ke folder yang sama dengan script ini terlebih dahulu."
+    echo "Silakan copy-paste berkas 'XCConfig.zip' ke folder $PARENT_DIR terlebih dahulu."
     exit 1
 fi
 
@@ -54,8 +55,8 @@ if [ $UNZIP_STATUS -ne 0 ]; then
     exit 1
 fi
 
-# 5. Find the folder containing .xcconfig files inside TEMP_DIR
-CONFIG_SRC_FILE=$(find "$TEMP_DIR" -name "*.xcconfig" -print -quit 2>/dev/null)
+# 5. Find the folder containing .xcconfig files inside TEMP_DIR (ignoring macOS __MACOSX metadata)
+CONFIG_SRC_FILE=$(find "$TEMP_DIR" -not -path "*/__MACOSX*" -name "*.xcconfig" ! -name "._*" -print -quit 2>/dev/null)
 
 if [ -n "$CONFIG_SRC_FILE" ]; then
     CONFIG_FOLDER=$(dirname "$CONFIG_SRC_FILE")
