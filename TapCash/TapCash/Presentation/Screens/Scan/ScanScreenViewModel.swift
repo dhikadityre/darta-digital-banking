@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import CoreDomain
 
 @MainActor
 final class ScanScreenViewModel: ObservableObject {

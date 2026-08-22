@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import CoreDomain
+import PackageData
 
 struct RootView: View {
     @StateObject private var router = NavigationRouter()

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreDomain
 
 struct LimitsCardView: View {
     let limits: LimitsEntity

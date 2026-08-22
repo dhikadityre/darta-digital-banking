@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import CoreDomain
 
 @MainActor
 public final class LoginScreenViewModel: ObservableObject {

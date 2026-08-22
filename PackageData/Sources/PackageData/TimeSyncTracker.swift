@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class TimeSyncTracker {
+public final class TimeSyncTracker: @unchecked Sendable {
     public static let shared = TimeSyncTracker()
     
     // Offset in seconds: (ServerTime - ClientLocalTime)

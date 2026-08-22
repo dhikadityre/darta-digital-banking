@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreDomain
 
 protocol AccountUseCase {
     func execute(email: String) async throws -> AccountEntity

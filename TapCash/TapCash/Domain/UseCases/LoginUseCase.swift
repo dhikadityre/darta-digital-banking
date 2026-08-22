@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreDomain
 
 protocol LoginUseCase {
     func execute(email: String, password: String) async throws -> (account: AccountEntity, limits: LimitsEntity)

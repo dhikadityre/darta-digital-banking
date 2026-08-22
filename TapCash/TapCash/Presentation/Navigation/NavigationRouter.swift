@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Combine
+import CoreDomain
 
 @MainActor
 final class NavigationRouter: ObservableObject {

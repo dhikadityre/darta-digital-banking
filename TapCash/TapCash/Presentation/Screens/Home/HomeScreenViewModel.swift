@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import PackageData
 
 class HomeScreenViewModel: ObservableObject {
     @Published private(set) var balanceCents: Int

@@ -7,6 +7,8 @@
 
 import Foundation
 import Combine
+import CoreDomain
+import PackageData
 
 @MainActor
 final class QRScreenViewModel: ObservableObject {

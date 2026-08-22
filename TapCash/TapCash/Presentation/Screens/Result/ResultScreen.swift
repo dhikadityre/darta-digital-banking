@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreDomain
 
 struct ResultScreen: View {
     @ObservedObject var viewModel: ResultScreenViewModel

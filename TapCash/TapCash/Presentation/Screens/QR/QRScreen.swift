@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import CoreDomain
 
 struct QRScreen: View {
     @ObservedObject var viewModel: QRScreenViewModel

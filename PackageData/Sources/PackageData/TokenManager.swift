@@ -8,7 +8,7 @@ public protocol TokenStorage {
     func clear()
 }
 
-public final class KeychainTokenStorage: TokenStorage {
+public final class KeychainTokenStorage: TokenStorage, @unchecked Sendable {
     private let service = "com.mediatamaidtech.tapcash"
     private let accountAccessToken = "accessToken"
     private let accountRefreshToken = "refreshToken"
@@ -82,7 +82,7 @@ public final class KeychainTokenStorage: TokenStorage {
     }
 }
 
-public final class TokenManager {
+public final class TokenManager: @unchecked Sendable {
     public static let shared = TokenManager()
     
     private let storage: TokenStorage

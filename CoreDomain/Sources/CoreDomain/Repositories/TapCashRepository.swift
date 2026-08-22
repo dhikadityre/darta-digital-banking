@@ -1,6 +1,6 @@
 import Foundation
 
-protocol TapCashRepository {
+public protocol TapCashRepository {
     func login(email: String, password: String) async throws -> LoginEntity
     func getAccount(email: String) async throws -> AccountEntity
     func getLimits(email: String) async throws -> LimitsEntity

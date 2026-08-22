@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7024587B303A510F000A852D /* PackageData in Frameworks */ = {isa = PBXBuildFile; productRef = 7024587B303A510F000A852C /* PackageData */; };
+		702458DA303A5881000A852B /* CoreDomain in Frameworks */ = {isa = PBXBuildFile; productRef = 702458D9303A5881000A852B /* CoreDomain */; };
 		70F6EA3530359258005DCFED /* UAT.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 70F6EA3330359258005DCFED /* UAT.xcconfig */; };
 		70F6EA3630359258005DCFED /* Base.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 70F6EA2F30359258005DCFED /* Base.xcconfig */; };
 		70F6EA3730359258005DCFED /* Development.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 70F6EA3030359258005DCFED /* Development.xcconfig */; };
@@ -25,7 +27,22 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		702458BD303A53A8000A852B /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		7024587B303A510F000A852B /* PackageData */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = PackageData; path = ../PackageData; sourceTree = SOURCE_ROOT; };
+		702458D8303A5545000A852B /* CoreDomain */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CoreDomain; path = ../CoreDomain; sourceTree = SOURCE_ROOT; };
 		7034B569303A366C007D7B33 /* TapCashPresentationTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TapCashPresentationTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		709A1015303569A20095B3EE /* Tap Cash Development.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tap Cash Development.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		70F6EA2F30359258005DCFED /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
@@ -74,18 +91,30 @@
 			buildActionMask = 2147483647;
 			files = (
 				70F6EA3C3035994A005DCFED /* DebugSwift in Frameworks */,
+				702458DA303A5881000A852B /* CoreDomain in Frameworks */,
+				7024587B303A510F000A852D /* PackageData in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7024587C303A51FF000A852B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		709A100C303569A20095B3EE = {
 			isa = PBXGroup;
 			children = (
+				702458D8303A5545000A852B /* CoreDomain */,
+				7024587B303A510F000A852B /* PackageData */,
 				70F6EA3430359258005DCFED /* XCConfig */,
 				709A1017303569A20095B3EE /* TapCash */,
 				7034B56A303A366C007D7B33 /* TapCashPresentationTest */,
+				7024587C303A51FF000A852B /* Frameworks */,
 				709A1016303569A20095B3EE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -144,6 +173,7 @@
 				709A1011303569A20095B3EE /* Sources */,
 				709A1012303569A20095B3EE /* Frameworks */,
 				709A1013303569A20095B3EE /* Resources */,
+				702458BD303A53A8000A852B /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -155,6 +185,7 @@
 			name = TapCash;
 			packageProductDependencies = (
 				70F6EA3B3035994A005DCFED /* DebugSwift */,
+				702458D9303A5881000A852B /* CoreDomain */,
 			);
 			productName = TapCash;
 			productReference = 709A1015303569A20095B3EE /* Tap Cash Development.app */;
@@ -1525,6 +1556,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		7024587B303A510F000A852C /* PackageData */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PackageData;
+		};
+		702458D9303A5881000A852B /* CoreDomain */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreDomain;
+		};
 		70F6EA3B3035994A005DCFED /* DebugSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 70F6EA3A3035994A005DCFED /* XCRemoteSwiftPackageReference "DebugSwift" */;

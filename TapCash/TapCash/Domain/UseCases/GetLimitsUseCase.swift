@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreDomain
 
 protocol GetLimitsUseCase {
     func execute(email: String) async throws -> LimitsEntity

@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import CoreDomain
 
 class ResultScreenViewModel: ObservableObject {
     @Published private(set) var dispenseResult: DispenseEntity?

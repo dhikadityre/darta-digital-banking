@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import PackageData
 import TapCash
 
 struct AppConfigStub: AppConfig {

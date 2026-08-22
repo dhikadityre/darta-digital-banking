@@ -27,7 +27,7 @@ public enum Config {
         case pocFeatureEnabled = "POC_FEATURE_ENABLED"
     }
 
-    private static let infoDictionary = Bundle.main.infoDictionary ?? [:]
+    nonisolated(unsafe) private static let infoDictionary = Bundle.main.infoDictionary ?? [:]
 
     public static var apiBaseUrl: URL? {
         guard let value = stringValue(for: .apiBaseUrl) else {

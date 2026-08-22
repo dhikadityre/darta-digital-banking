@@ -41,6 +41,28 @@
                ReferencedContainer = "container:TapCash.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "702458A7303A53A7000A852B"
+               BuildableName = "CoreDomainTests.xctest"
+               BlueprintName = "CoreDomainTests"
+               ReferencedContainer = "container:TapCash.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "702458C9303A540B000A852B"
+               BuildableName = "PackageDatas.xctest"
+               BlueprintName = "PackageDatas"
+               ReferencedContainer = "container:TapCash.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

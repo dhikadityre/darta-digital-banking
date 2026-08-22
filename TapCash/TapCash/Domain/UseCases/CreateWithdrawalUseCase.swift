@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreDomain
 
 protocol CreateWithdrawalUseCase {
     func execute(email: String, amountCents: Int) async throws -> TicketEntity

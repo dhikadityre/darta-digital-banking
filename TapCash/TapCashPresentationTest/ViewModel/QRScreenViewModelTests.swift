@@ -7,6 +7,7 @@
 
 import Foundation
 import Testing
+import CoreDomain
 @testable import TapCash
 
 @Suite @MainActor

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreDomain
 
 protocol DispenseUseCase {
     func execute(qrPayload: String) async throws -> DispenseEntity

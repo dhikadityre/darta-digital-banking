@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreDomain
 @testable import TapCash
 
 final class CreateWithdrawalUseCaseSpy: CreateWithdrawalUseCase {
