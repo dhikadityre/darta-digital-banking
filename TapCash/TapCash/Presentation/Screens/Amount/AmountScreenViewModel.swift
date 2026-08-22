@@ -10,11 +10,17 @@ import Combine
 
 @MainActor
 final class AmountScreenViewModel: ObservableObject {
-    @Published var selectedAmountCents = 4000
+    @Published var selectedAmountCents = 20_000
     @Published var loading = false
     @Published var errorMessage: String?
     
-    let options = [2000, 4000, 6000, 10000, 20000]
+    let options = [
+        10_000,
+        20_000,
+        50_000,
+        100_000,
+        200_000
+    ]
     
     let limits: LimitsEntity?
     private let email: String
@@ -24,11 +30,16 @@ final class AmountScreenViewModel: ObservableObject {
     var onBackSelected: (() -> Void)?
     
     var maxAllowed: Int {
-        min(limits?.maxCents ?? 20000, limits?.remainingTodayCents ?? .max)
+        min(
+            limits?.maxCents
+                ?? 200_000,
+            limits?.remainingTodayCents
+                ?? .max
+        )
     }
     
     var minAllowed: Int {
-        limits?.minCents ?? 2000
+        limits?.minCents ?? 10_000
     }
     
     var isValid: Bool {
