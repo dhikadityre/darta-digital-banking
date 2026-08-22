@@ -82,4 +82,30 @@ if [ -n "$BACKUP_DIR" ] && [ -d "$BACKUP_DIR" ]; then
     echo "Backup lama berhasil dihapus."
 fi
 
-echo "Sukses! Berkas XCConfig berhasil dipasang dan siap digunakan di Xcode."
+# 6. Cleaning Xcode Caches and Derived Data
+echo "Membersihkan cache Xcode dan Derived Data..."
+
+# Clear Derived Data selectively to prevent SPM checkout conflicts
+DERIVED_DATA_DIR=~/Library/Developer/Xcode/DerivedData
+if [ -d "$DERIVED_DATA_DIR" ]; then
+    echo "- Menghapus Build & Indexing cache untuk TapCash di Derived Data..."
+    rm -rf "$DERIVED_DATA_DIR"/TapCash-*/Build
+    rm -rf "$DERIVED_DATA_DIR"/TapCash-*/Index.noindex
+else
+    echo "- Folder Derived Data tidak ditemukan. Lewati."
+fi
+
+# Clean Build Folder and Resolve Package Dependencies
+if command -v xcodebuild &> /dev/null; then
+    echo "- Memperbarui dan menyelesaikan Package Dependencies..."
+    xcodebuild -project "$PARENT_DIR/TapCash.xcodeproj" -resolvePackageDependencies -quiet
+    echo "- Package Dependencies selesai."
+
+    echo "- Melakukan Clean Build Folder..."
+    xcodebuild -project "$PARENT_DIR/TapCash.xcodeproj" -alltargets clean -quiet
+    echo "- Clean Build Folder selesai."
+else
+    echo "Warning: Perintah 'xcodebuild' tidak ditemukan. Lewati clean build dan resolve packages."
+fi
+
+echo "Sukses! Berkas XCConfig berhasil dipasang, cache Xcode dibersihkan, dan proyek siap digunakan."
