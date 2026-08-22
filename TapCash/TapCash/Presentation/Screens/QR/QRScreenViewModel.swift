@@ -21,6 +21,7 @@ final class QRScreenViewModel: ObservableObject {
     private let amountCents: Int
     private let createWithdrawalUseCase: CreateWithdrawalUseCase
     private let appConfig: AppConfig
+    private let now: () -> Date
     private var validationTask: Task<Void, Never>?
     private var timer: AnyCancellable?
     
@@ -32,13 +33,15 @@ final class QRScreenViewModel: ObservableObject {
         email: String,
         amountCents: Int,
         createWithdrawalUseCase: CreateWithdrawalUseCase,
-        appConfig: AppConfig = DefaultAppConfig()
+        appConfig: AppConfig = DefaultAppConfig(),
+        now: @escaping () -> Date = { TimeSyncTracker.shared.serverTimeNow() }
     ) {
         self.ticket = ticket
         self.email = email
         self.amountCents = amountCents
         self.createWithdrawalUseCase = createWithdrawalUseCase
         self.appConfig = appConfig
+        self.now = now
         syncRemaining()
         startValidationPolling()
         startTimer()
@@ -51,7 +54,7 @@ final class QRScreenViewModel: ObservableObject {
         let date = formatter.date(from: expiresAt) ?? ISO8601DateFormatter().date(from: expiresAt)
         if let date = date {
             // self.remainingSeconds = max(0, Int(date.timeIntervalSinceNow))
-            let serverTime = TimeSyncTracker.shared.serverTimeNow()
+            let serverTime = self.now()
             self.remainingSeconds = max(0, Int(date.timeIntervalSince(serverTime)))
         } else {
             self.remainingSeconds = 0
