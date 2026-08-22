@@ -37,10 +37,12 @@ extension HomeScreen {
     
     private func renderContainerButton() -> some View {
         VStack(alignment: .leading, spacing: 16) {
-            Button("Withdraw cash") {
-                viewModel.onWithdrawSelected?()
+            if viewModel.isWithdrawEnabled {
+                Button("Withdraw cash") {
+                    viewModel.onWithdrawSelected?()
+                }
+                .buttonStyle(PrimaryButtonStyle())
             }
-            .buttonStyle(PrimaryButtonStyle())
             
             Button("Scan a code (Cashier mode)") {
                 viewModel.onScanSelected?()

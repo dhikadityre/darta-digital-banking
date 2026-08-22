@@ -18,6 +18,7 @@ final class QRScreenViewModel: ObservableObject {
     private let email: String
     private let amountCents: Int
     private let createWithdrawalUseCase: CreateWithdrawalUseCase
+    private let appConfig: AppConfig
     private var validationTask: Task<Void, Never>?
     private var timer: AnyCancellable?
     
@@ -28,12 +29,14 @@ final class QRScreenViewModel: ObservableObject {
         ticket: TicketEntity?,
         email: String,
         amountCents: Int,
-        createWithdrawalUseCase: CreateWithdrawalUseCase
+        createWithdrawalUseCase: CreateWithdrawalUseCase,
+        appConfig: AppConfig = DefaultAppConfig()
     ) {
         self.ticket = ticket
         self.email = email
         self.amountCents = amountCents
         self.createWithdrawalUseCase = createWithdrawalUseCase
+        self.appConfig = appConfig
         syncRemaining()
         startValidationPolling()
         startTimer()
@@ -95,10 +98,13 @@ final class QRScreenViewModel: ObservableObject {
         validationTask?.cancel()
         guard let ticket = ticket else { return }
         
+        let intervalSeconds = appConfig.pollingIntervalSeconds
+        let nanoseconds = UInt64(max(0.1, intervalSeconds) * 1_000_000_000)
+        
         validationTask = Task { [weak self] in
             while !Task.isCancelled {
                 do {
-                    try await Task.sleep(nanoseconds: 3_000_000_000)
+                    try await Task.sleep(nanoseconds: nanoseconds)
                 } catch {
                     break
                 }

@@ -11,6 +11,7 @@ struct RootView: View {
     @StateObject private var router = NavigationRouter()
     
     // Dependencies
+    private let appConfig: AppConfig
     private let loginUseCase: LoginUseCase
     private let getLimitsUseCase: GetLimitsUseCase
     private let accountUseCase: AccountUseCase
@@ -18,9 +19,11 @@ struct RootView: View {
     private let dispenseUseCase: DispenseUseCase
 
     init() {
+        let config = DefaultAppConfig()
+        self.appConfig = config
         let repository = TapCashRepositoryImpl(
             client: URLSessionHTTPClient(),
-            baseURL: Config.apiBaseUrl!
+            baseURL: config.apiBaseUrl!
         )
         self.loginUseCase = LoginUseCaseImpl(repository: repository)
         self.getLimitsUseCase = GetLimitsUseCaseImpl(repository: repository)
@@ -79,7 +82,8 @@ extension RootView {
     private func makeHomeViewModel() -> HomeScreenViewModel {
         let vm = HomeScreenViewModel(
             displayName: router.sessionDisplayName ?? "",
-            balanceCents: router.sessionBalanceCents
+            balanceCents: router.sessionBalanceCents,
+            appConfig: appConfig
         )
         vm.onWithdrawSelected = {
             router.navigateToAmount()
@@ -115,7 +119,8 @@ extension RootView {
             ticket: router.sessionTicket,
             email: router.sessionEmail ?? "",
             amountCents: router.sessionLastAmountCents,
-            createWithdrawalUseCase: createWithdrawalUseCase
+            createWithdrawalUseCase: createWithdrawalUseCase,
+            appConfig: appConfig
         )
         vm.onFinished = {
             Task {

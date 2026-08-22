@@ -15,8 +15,15 @@ class HomeScreenViewModel: ObservableObject {
     var onWithdrawSelected: (() -> Void)?
     var onScanSelected: (() -> Void)?
     
-    init(displayName: String, balanceCents: Int) {
+    private let appConfig: AppConfig
+    
+    var isWithdrawEnabled: Bool {
+        appConfig.pocFeatureEnabled
+    }
+    
+    init(displayName: String, balanceCents: Int, appConfig: AppConfig = DefaultAppConfig()) {
         self.displayName = displayName
         self.balanceCents = balanceCents
+        self.appConfig = appConfig
     }
 }
