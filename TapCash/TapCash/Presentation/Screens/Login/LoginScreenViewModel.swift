@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 @MainActor
-final class LoginScreenViewModel: ObservableObject {
+public final class LoginScreenViewModel: ObservableObject {
     @Published var email = "alex@tapcash.demo"
     @Published var password = "cash1234"
     @Published var loading = false
