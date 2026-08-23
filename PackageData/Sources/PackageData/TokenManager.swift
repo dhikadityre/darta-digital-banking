@@ -85,7 +85,7 @@ public final class KeychainTokenStorage: TokenStorage, @unchecked Sendable {
 public final class TokenManager: @unchecked Sendable {
     public static let shared = TokenManager()
     
-    private let storage: TokenStorage
+    var storage: TokenStorage
     
     public init(storage: TokenStorage = KeychainTokenStorage()) {
         self.storage = storage
