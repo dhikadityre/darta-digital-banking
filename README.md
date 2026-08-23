@@ -132,10 +132,13 @@ Eksekusi pengujian langsung menggunakan command line dari direktori module masin
   ```bash
   cd CoreDomain && swift test
   ```
+    *(Atau jalankan menggunakan scheme `CoreDomain` di Xcode)*
+
 - **PackageData**:
   ```bash
   cd PackageData && swift test
   ```
+    *(Atau jalankan menggunakan scheme `PackageData` di Xcode)*
 
 ### 2. Unit Test Presentation & UI (Menggunakan Simulator iOS)
 Untuk menguji UI Component dan Presentation Flow, gunakan scheme `TapCashPresentationTest` yang akan dijalankan di Simulator iOS.
