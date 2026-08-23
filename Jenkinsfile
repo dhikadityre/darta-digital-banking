@@ -35,9 +35,23 @@ pipeline {
             }
         }
         
-        stage('Run Unit Tests') {
+        stage('Run CoreDomain Unit Tests') {
             steps {
-                echo 'Running tests validation stage...'
+                echo 'Running CoreDomain Unit Tests...'
+                sh 'if command -v swift >/dev/null 2>&1; then (cd CoreDomain && swift test); else echo "swift not found (Demo Mode)"; fi'
+            }
+        }
+        
+        stage('Run PackageData Unit Tests') {
+            steps {
+                echo 'Running PackageData Unit Tests...'
+                sh 'if command -v swift >/dev/null 2>&1; then (cd PackageData && swift test); else echo "swift not found (Demo Mode)"; fi'
+            }
+        }
+
+        stage('Run TapCash Unit Tests') {
+            steps {
+                echo 'Running TapCash App tests...'
                 // Run the non-interactive test runner
                 sh './TapCash/script/run_tests.sh'
             }
