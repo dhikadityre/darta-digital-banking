@@ -9,7 +9,7 @@ import Foundation
 import CoreDomain
 @testable import TapCash
 
-final class LoginUseCaseSpy: LoginUseCase {
+final class LoginUseCaseSpy: LoginUseCase, @unchecked Sendable {
     var executeCalled = false
     var calledEmail: String?
     var calledPassword: String?

@@ -9,7 +9,7 @@ import Foundation
 import CoreDomain
 @testable import TapCash
 
-final class CreateWithdrawalUseCaseSpy: CreateWithdrawalUseCase {
+final class CreateWithdrawalUseCaseSpy: CreateWithdrawalUseCase, @unchecked Sendable {
     var executeCalled = false
     var executeCalledEmail: String?
     var executeCalledAmountCents: Int?
