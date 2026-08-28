@@ -1,6 +1,6 @@
 //
 //  AccountUseCase.swift
-//  TapCash
+//  Darta
 //
 //  Created by DHIKA ADITYA ARE on 20/08/26.
 //
@@ -13,9 +13,9 @@ public protocol CreateWithdrawalUseCase: Sendable {
 }
 
 public final class CreateWithdrawalUseCaseImpl: CreateWithdrawalUseCase, @unchecked Sendable {
-    private let repository: TapCashRepository
+    private let repository: DartaRepository
 
-    public init(repository: TapCashRepository) {
+    public init(repository: DartaRepository) {
         self.repository = repository
     }
 

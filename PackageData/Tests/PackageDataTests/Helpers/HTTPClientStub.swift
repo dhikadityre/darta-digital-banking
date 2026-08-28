@@ -44,7 +44,7 @@ final class HTTPClientStub: HTTPClient, @unchecked Sendable {
         _requestCalls.append(RequestCall(url: url, method: "GET", data: nil, headers: headers))
         let result = _urlStubbedResults[url] ?? _stubbedResult
         
-        // 2. Kunci dilepas segera setelah modifikasi & pembacaan selesai, sehingga thread lain bisa mengantre kembali.
+        // // 2. Kunci dilepas segera setelah modifikasi & pembacaan selesai, sehingga thread lain bisa mengantre kembali.
         lock.unlock()
         
         if let result = result {

@@ -2,12 +2,12 @@ import XCTest
 @testable import CoreDomain
 
 final class DispenseUseCaseTests: XCTestCase {
-    private var repositorySpy: TapCashRepositorySpy!
+    private var repositorySpy: DartaRepositorySpy!
     private var sut: DispenseUseCaseImpl!
 
     override func setUp() {
         super.setUp()
-        repositorySpy = TapCashRepositorySpy()
+        repositorySpy = DartaRepositorySpy()
         sut = DispenseUseCaseImpl(repository: repositorySpy)
     }
 

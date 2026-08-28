@@ -8,8 +8,9 @@ public protocol TokenStorage {
     func clear()
 }
 
+// MARK: - STEP 3.0
 public final class KeychainTokenStorage: TokenStorage, @unchecked Sendable {
-    private let service = "com.mediatamaidtech.tapcash"
+    private let service = "com.mediatamaidtech.darta"
     private let accountAccessToken = "accessToken"
     private let accountRefreshToken = "refreshToken"
     

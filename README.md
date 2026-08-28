@@ -1,19 +1,34 @@
-# TapCash iOS Application (SwiftUI)
+# Darta iOS Application (SwiftUI)
 
-Client iOS Native untuk aplikasi **TapCash**. Aplikasi ini mengintegrasikan authentication pengguna, simulasi saldo & batas penarikan, pembuatan tiket penarikan QR berkode server-signed, serta mode Cashier untuk memindai dan mencairkan kode QR secara real-time.
+**DARTA Digital Banking**
+
+DARTA is a sample digital banking application built with Swift and SwiftUI, featuring QR-based payments and essential banking functionalities.
+
+### About the Name
+
+DARTA is derived from two elements:
+
+*   **D** — inspired by Dhika, the developer behind this project.
+*   **Arta** — an Indonesian word associated with wealth, assets, and financial value.
+
+Together, DARTA represents a personal take on a modern Indonesian digital banking brand, combining a personal identity with a financial concept.
 
 ---
 
-## 📱 Fitur Utama
+Native iOS Client for the **Darta** application. This app integrates user authentication, simulated balances & withdrawal limits, server-signed QR withdrawal ticket creation, and Cashier mode to scan and redeem QR codes in real-time.
 
-- **Customer Mode**:
-  - Simulasi saldo & batas penarikan harian/per transaksi via endpoint `/api/accounts/{email}/limits`.
-  - Penghitung mundur aktif & penyegaran otomatis kode QR sebelum kedaluwarsa.
-- **Cashier Mode**:
-  - Pemindaian kode QR menggunakan kamera fisik (`AVCaptureMetadataOutput`) untuk proses pencairan dana instan melalui `/api/withdrawals/dispense`.
-  - Penanganan izin kamera secara kontekstual dengan fallback navigasi ke Settings.
-- **In-App Debugger**:
-  - Terintegrasi dengan `DebugSwift` untuk memantau performa, log network, dan configuration environment langsung di dalam aplikasi.
+---
+
+## 📱 Key Features
+
+*   **Customer Mode**:
+    *   Simulated balance & daily/per-transaction withdrawal limits via the `/api/accounts/{email}/limits` endpoint.
+    *   Active countdown & automatic refresh of the QR code before expiration.
+*   **Cashier Mode**:
+    *   QR code scanning using the physical camera (`AVCaptureMetadataOutput`) for instant cash redemption via `/api/withdrawals/dispense`.
+    *   Contextual handling of camera permissions with a fallback navigation to Settings.
+*   **In-App Debugger**:
+    *   Integrated with `DebugSwift` to monitor performance, network logs, and environment configurations directly inside the app.
 
 ---
 
@@ -21,140 +36,148 @@ Client iOS Native untuk aplikasi **TapCash**. Aplikasi ini mengintegrasikan auth
 
 | Requirement | Minimum Version | Description |
 | :--- | :--- | :--- |
-| **Operating System** | macOS Sequoia (atau kompatibel) | Dibutuhkan untuk menjalankan Xcode terbaru |
-| **Xcode Version** | `16.2+` | Dibutuhkan dukungan Swift 6.2 compiler |
-| **Swift Version** | `6.2` | Mengaktifkan strict concurrency checks |
-| **iOS Deployment Target** | `iOS 16.0+` | Menggunakan fitur SwiftUI & NavigationStack modern |
-| **Physical Device** | Dibutuhkan untuk Cashier Mode | Simulator Xcode tidak memiliki kamera fisik |
+| **Operating System** | macOS Sequoia (or compatible) | Required to run the latest version of Xcode |
+| **Xcode Version** | `16.2+` | Required for Swift 6.2 compiler support |
+| **Swift Version** | `6.2` | Enables strict concurrency checks |
+| **iOS Deployment Target** | `iOS 16.0+` | Uses modern SwiftUI & NavigationStack features |
+| **Physical Device** | Required for Cashier Mode | Xcode Simulator does not support a physical camera |
 
 ---
 
 ## 📐 Architecture Overview
 
-Project ini menerapkan prinsip **Clean Architecture & SOLID** yang ter-decouple secara ketat menggunakan **Modular Local Swift Package Manager (SPM)**:
+This project implements **Clean Architecture & SOLID** principles with strict decoupling using a **Modular Local Swift Package Manager (SPM)** structure:
 
 ```
 ios/
-├── TapCash/                         # Main Target (Presentation & UI Layer)
-│   ├── App/                         # TapCashApp entry point & Lifecycle Coordinator
+├── Darta/                         # Main Target (Presentation & UI Layer)
+│   ├── App/                         # DartaApp entry point & Lifecycle Coordinator
 │   ├── Presentation/                # SwiftUI Views, ViewModels, & Router Coordinator
 │   ├── Utilities/                   # Helpers & Extensions
-│   └── XCConfig/                    # [NEW/LOCAL] Berkas configuration build target (.xcconfig)
+│   └── XCConfig/                    # [NEW/LOCAL] Build configuration target files (.xcconfig)
 │
 ├── CoreDomain/                      # Local SPM Package (Domain Layer)
-│   ├── Sources/CoreDomain/          # Business Logic Inti: Entities, Use Cases, & Repository Contracts
-│   └── Tests/CoreDomainTests/       # Unit Test khusus Business Logic murni (Cepat, Tanpa Simulator)
+│   ├── Sources/CoreDomain/          # Core Business Logic: Entities, Use Cases, & Repository Contracts
+│   └── Tests/CoreDomainTests/       # pure Business Logic Unit Tests (Fast, No Simulator)
 │
 └── PackageData/                     # Local SPM Package (Data Layer)
-    ├── Sources/PackageData/         # Infrastruktur: API Client, DTOs, Mappers, & Concrete Repositories
-    └── Tests/PackageDataTests/      # Unit Test integration data & parsing (Cepat, Tanpa Simulator)
+    ├── Sources/PackageData/         # Infrastructure: API Client, DTOs, Mappers, & Concrete Repositories
+    └── Tests/PackageDataTests/      # Data integration & parsing Unit Tests (Fast, No Simulator)
 ```
 
 ---
 
-## 📦 Dependency & Library yang Digunakan
+## 📦 Dependencies & Libraries
 
-Project membagi dependency menjadi dua kategori utama:
+Dependencies are categorized into two main areas:
 
-1. **Modular Local Package (Swift Package Manager)**:
-   - [CoreDomain](file:///Users/dhikadityre/Documents/Project/MediatamaIdTech/BSN/POC/ios/CoreDomain) - Berisi Entity, UseCase, dan Protokol abstraksi.
-   - [PackageData](file:///Users/dhikadityre/Documents/Project/MediatamaIdTech/BSN/POC/ios/PackageData) - Berisi implementasi repositori, REST API client, DTO, dan pemetaan data.
-2. **Third-Party Package (Remote SPM)**:
-   - [DebugSwift](https://github.com/DebugSwift/DebugSwift) (`1.18.0`) - Toolkit debugging dalam aplikasi untuk inspeksi HTTP request, performa UI, dan CoreData/File logs.
+1.  **Modular Local Package (Swift Package Manager)**:
+    *   [CoreDomain](file:///Users/dhikadityre/Documents/Project/dhikadityre/ios/CoreDomain) - Contains Entities, Use Cases, and abstract Repository protocols.
+    *   [PackageData](file:///Users/dhikadityre/Documents/Project/dhikadityre/ios/PackageData) - Contains concrete repository implementations, REST API client, DTOs, and data mapping.
+2.  **Third-Party Package (Remote SPM)**:
+    *   [DebugSwift](https://github.com/DebugSwift/DebugSwift) (`1.18.0`) - In-app debugging toolkit for HTTP request inspection, UI performance, and CoreData/File logs.
 
 ---
 
-## ⚙️ Panduan Setup Configuration (`XCConfig`)
+## ⚙️ Configuration Setup Guide (`XCConfig`)
 
-Untuk alasan keamanan data sensitif dan kredensial API, seluruh berkas configuration `.xcconfig` dimasukkan ke dalam `.gitignore` dan **TIDAK** disimpan ke dalam repositori Git.
+For security reasons regarding sensitive data and API credentials, all build configuration `.xcconfig` files are added to `.gitignore` and are **NOT** stored in the Git repository.
 
-### Langkah-langkah Setup:
+### Setup Steps:
 
-1. **Dapatkan File Kredensial**:
-   - Pastikan Anda telah memiliki berkas `XCConfig.zip` (jika belum punya, silakan hubungi/minta ke **Lead Developer**).
-2. **Penempatan Berkas**:
-   - Salin dan letakkan berkas `XCConfig.zip` di dalam folder `TapCash/` (sejajar dengan file `TapCash.xcodeproj`).
-   - *Lokasi target*: `ios/TapCash/XCConfig.zip`
-3. **Jalankan Script Instalasi**:
-   - Buka Terminal di root direktori project, lalu jalankan script setup berikut:
-     ```bash
-     chmod +x TapCash/script/setup_xcconfig.sh
-     ./TapCash/script/setup_xcconfig.sh
-     ```
-   - *Apa yang dilakukan script ini?*
-     - Mengekstrak berkas `XCConfig.zip` ke folder target `TapCash/XCConfig/`.
-     - Melakukan backup jika folder target sudah ada sebelumnya.
-     - Membersihkan cache Xcode build & Derived Data secara lokal.
-     - Melakukan sinkronisasi serta resolve Package Dependencies project.
-4. **Verifikasi Penempatan File**:
-   Setelah script berhasil dijalankan, pastikan folder `TapCash/XCConfig/` telah terisi berkas configuration berikut:
-   - `Base.xcconfig` - Configuration dasar project.
-   - `Development.xcconfig` - Kredensial & URL API dev.
-   - `Staging.xcconfig` - Configuration server staging.
-   - `UAT.xcconfig` - Configuration server testing UAT.
-   - `Production.xcconfig` - Configuration server production.
+1.  **Obtain the Credentials File**:
+    *   Ensure you have the `XCConfig.zip` file (if you do not have it, contact the **Lead Developer**).
+2.  **File Placement**:
+    *   Copy and place the `XCConfig.zip` file inside the `Darta/` directory (parallel to the `Darta.xcodeproj` file).
+    *   *Target location*: `ios/Darta/XCConfig.zip`
+3.  **Run the Installation Script**:
+    *   Open Terminal in the project's root directory, then run the setup script:
+        ```bash
+        chmod +x Darta/script/setup_xcconfig.sh
+        ./Darta/script/setup_xcconfig.sh
+        ```
+    *   *What does this script do?*
+        *   Extracts the `XCConfig.zip` file into the target directory `Darta/XCConfig/`.
+        *   Creates a backup if the target directory already exists.
+        *   Clears local Xcode build cache & Derived Data.
+        *   Synchronizes and resolves project Package Dependencies.
+4.  **Verify File Placement**:
+    Once the script runs successfully, ensure the `Darta/XCConfig/` directory contains the following configuration files:
+    *   `Base.xcconfig` - Base project configurations.
+    *   `Development.xcconfig` - Credentials & dev API URL.
+    *   `Staging.xcconfig` - Staging server configuration.
+    *   `UAT.xcconfig` - UAT testing server configuration.
+    *   `Production.xcconfig` - Production server configuration.
 
 ---
 
 ## 🚀 Build Schemes & Environments
 
-Project ini memiliki beberapa scheme target yang disesuaikan dengan siklus rilis dan kebutuhan pengujian:
+The project has several target schemes tailored to release cycles and testing requirements:
 
-- **`TapCash-Development`**: Menghubungkan aplikasi ke server dev.
-- **`TapCash-Staging`**: Digunakan untuk pengujian integration internal di environment staging.
-- **`TapCash-UAT`**: Digunakan untuk pengujian penerimaan pengguna (User Acceptance Testing) dengan data yang menyerupai production.
-- **`TapCash-Production`**: Configuration final untuk distribusi App Store dengan proteksi keamanan maksimum.
-- **`TapCashPresentationTest`**: Scheme khusus untuk menjalankan pengujian UI & Presentation Layer di simulator.
+*   **`Darta-Development`**: Connects the app to the dev server.
+*   **`Darta-Staging`**: Used for internal integration testing in the staging environment.
+*   **`Darta-UAT`**: Used for User Acceptance Testing (UAT) with data mirroring production.
+*   **`Darta-Production`**: Final configuration for App Store distribution with maximum security protection.
+*   **`DartaPresentationTest`**: A dedicated scheme for running UI & Presentation Layer tests in the simulator.
 
 > [!TIP]
-> Saat berpindah scheme di Xcode, pastikan scheme yang dipilih sesuai dengan target server API yang dituju agar pengujian data berjalan lancar.
+> When switching schemes in Xcode, ensure the selected scheme matches the intended target API server to ensure smooth testing.
 
 ---
 
 ## 🧪 Running Unit Tests
 
-Untuk mempercepat proses pengembangan dan integration CI/CD (Jenkins), unit test dalam project ini dirancang agar dapat dieksekusi secara efisien:
+To speed up the development process and integration with CI/CD (Jenkins), unit tests are designed to run efficiently:
 
-### 1. Unit Test Standalone di Environment macOS (Sangat Cepat ⚡)
-Unit test untuk module CoreDomain dan PackageData tidak memerlukan simulator iOS sehingga dapat dieksekusi langsung secara native menggunakan Swift compiler di mesin Mac Anda. Hal ini memangkas waktu start-up simulator secara signifikan.
+### 1. Standalone Unit Tests in macOS Environment (Ultra Fast ⚡)
 
-Pengujian ini dapat dijalankan melalui dua cara:
+Unit tests for the CoreDomain and PackageData modules do not require an iOS simulator. They can be executed natively using the Swift compiler on your Mac, saving significant simulator startup time.
 
-#### A. Menggunakan Xcode Scheme
-Buka project di Xcode, lalu pilih dan jalankan target scheme berikut:
-- **`CoreDomain`**: Scheme untuk menjalankan unit test khusus Business Logic di module CoreDomain.
-- **`PackageData`**: Scheme untuk menjalankan unit test integration data di module PackageData.
-*(Pilih scheme lalu tekan shortcut `Cmd + U` untuk mengeksekusi test).*
+You can run these tests in two ways:
 
-#### B. Menggunakan Swift CLI (Terminal / Jenkins)
-Eksekusi pengujian langsung menggunakan command line dari direktori module masing-masing:
-- **CoreDomain**:
-  ```bash
-  cd CoreDomain && swift test
-  ```
-    *(Atau jalankan menggunakan scheme `CoreDomain` di Xcode)*
+#### A. Using Xcode Scheme
 
-- **PackageData**:
-  ```bash
-  cd PackageData && swift test
-  ```
-    *(Atau jalankan menggunakan scheme `PackageData` di Xcode)*
+Open the project in Xcode, then choose and run one of the following target schemes:
 
-### 2. Unit Test Presentation & UI (Menggunakan Simulator iOS)
-Untuk menguji UI Component dan Presentation Flow, gunakan scheme `TapCashPresentationTest` yang akan dijalankan di Simulator iOS.
-- **Melalui Xcode**: Pilih scheme `TapCashPresentationTest` -> tekan `Cmd + U`.
-- **Melalui Terminal / Jenkins**: Jalankan runner script terpadu:
-  ```bash
-  ./TapCash/script/run_tests.sh
-  ```
-  *(Script ini akan mendeteksi simulator iPhone yang kompatibel secara otomatis dan mengeksekusi test target).*
+*   **`CoreDomain`**: Scheme for running pure Business Logic unit tests in the CoreDomain module.
+*   **`PackageData`**: Scheme for running data integration unit tests in the PackageData module.
+
+*(Select the scheme and press `Cmd + U` to execute).*
+
+#### B. Using Swift CLI (Terminal / Jenkins)
+
+Execute tests directly using the command line inside the respective module directories:
+
+*   **CoreDomain**:
+    ```bash
+    cd CoreDomain && swift test
+    ```
+    *(Or run using the `CoreDomain` scheme in Xcode)*
+*   **PackageData**:
+    ```bash
+    cd PackageData && swift test
+    ```
+    *(Or run using the `PackageData` scheme in Xcode)*
+
+### 2. Presentation & UI Unit Tests (Using iOS Simulator)
+
+To test UI components and presentation flow, use the `DartaPresentationTest` scheme on the iOS Simulator.
+
+*   **Via Xcode**: Select the `DartaPresentationTest` scheme -> press `Cmd + U`.
+*   **Via Terminal / Jenkins**: Run the integrated test runner script:
+    ```bash
+    ./Darta/script/run_tests.sh
+    ```
+    *(This script automatically detects a compatible iPhone simulator and executes the test target).*
 
 ---
 
-## 🔑 Kredensial Uji Coba (Demo Credentials)
+## 🔑 Demo Credentials
 
-Untuk masuk ke dalam aplikasi di lingkungan pengujian, gunakan akun berikut:
-* **Username**: `alex@tapcash.demo`
-* **Password**: `cash1234`
+To log into the app in the testing environment, use the following credentials:
 
-*Catatan: Seluruh data saldo, mutasi, dan penarikan yang tertera merupakan data simulasi.*
+*   **Username**: `alex@darta.demo`
+*   **Password**: `cash1234`
+
+*Note: All balance, transaction history, and withdrawal data shown are purely simulated.*

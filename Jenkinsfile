@@ -31,7 +31,7 @@ pipeline {
                 sh 'if command -v xcodebuild >/dev/null 2>&1; then xcodebuild -version; else echo "xcodebuild not found (Demo Mode)"; fi'
                 
                 echo 'Setting Script Permissions...'
-                sh 'chmod +x TapCash/script/*.sh'
+                sh 'chmod +x Darta/script/*.sh'
             }
         }
         
@@ -49,11 +49,11 @@ pipeline {
             }
         }
 
-        stage('Run TapCash Unit Tests') {
+        stage('Run Darta Unit Tests') {
             steps {
-                echo 'Running TapCash App tests...'
+                echo 'Running Darta App tests...'
                 // Run the non-interactive test runner
-                sh './TapCash/script/run_tests.sh'
+                sh './Darta/script/run_tests.sh'
             }
         }
     }

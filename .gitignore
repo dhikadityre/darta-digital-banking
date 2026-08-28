@@ -136,6 +136,9 @@ BuildTools/.swiftpm
 *.xcuserstate
 
 ## XCConfig ###
-TapCash/XCConfig/
-TapCash/XCConfig_backup*
-TapCash/XCConfig.zip
+Darta/XCConfig/
+Darta/XCConfig_backup*
+Darta/XCConfig.zip
+
+# Important POC documents
+important/

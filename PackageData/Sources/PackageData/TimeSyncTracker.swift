@@ -1,6 +1,6 @@
 //
 //  TimeSyncTracker.swift
-//  TapCash
+//  Darta
 //
 //  Created by DHIKA ADITYA ARE on 20/08/26.
 //
@@ -23,6 +23,7 @@ public final class TimeSyncTracker: @unchecked Sendable {
     
     private init() {}
     
+    // MARK: - STEP 1.1.0
     /// Sync the time using the "Date" header string from HTTP Response.
     public func syncTime(withServerDateString dateString: String) {
         guard let serverDate = formatter.date(from: dateString) else {

@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - STEP 9.0
 public protocol HTTPClientTask {
     func cancel()
 }
@@ -260,6 +261,8 @@ public extension HTTPClient {
     }
 }
 
+
+// MARK: - STEP 1.0.0
 public final class RemoteMapper {
     private init() {}
     
