@@ -7,19 +7,30 @@
 
 import SwiftUI
 
-struct SecondaryButtonStyle: ButtonStyle {
-    var enabled: Bool = true
-    func makeBody(configuration: Configuration) -> some View {
+public struct SecondaryButtonStyle: ButtonStyle {
+    public var enabled: Bool = true
+
+    public init(enabled: Bool = true) {
+        self.enabled = enabled
+    }
+
+    public func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.headline)
-            .foregroundStyle(enabled ? Palette.navy : Palette.navy.opacity(0.4))
+            .font(.headline.weight(.medium))
+            .foregroundStyle(enabled ? Palette.ink : Palette.muted)
             .frame(maxWidth: .infinity, minHeight: 54)
-            .background(Color.clear)
-            .contentShape(RoundedRectangle(cornerRadius: 8))
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(enabled ? Palette.navy : Palette.navy.opacity(0.4), lineWidth: 1)
+            .background(
+                RoundedRectangle(cornerRadius: 14)
+                    .fill(Palette.surfaceElevated)
             )
-            .scaleEffect(configuration.isPressed ? 0.98 : 1)
+            .overlay(
+                RoundedRectangle(cornerRadius: 14)
+                    .stroke(
+                        enabled ? Palette.amber.opacity(0.3) : Palette.border,
+                        lineWidth: 1
+                    )
+            )
+            .scaleEffect(configuration.isPressed ? 0.97 : 1)
+            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: configuration.isPressed)
     }
 }

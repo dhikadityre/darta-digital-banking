@@ -11,7 +11,7 @@ import CoreDomain
 
 @MainActor
 public final class LoginScreenViewModel: ObservableObject {
-    @Published var email = "alex@darta.demo"
+    @Published var email = "alex@tapcash.demo"
     @Published var password = "cash1234"
     @Published var loading = false
     @Published var errorMessage: String?
