@@ -17,7 +17,7 @@ struct LoginScreenViewModelTests {
         let spy = LoginUseCaseSpy()
         let viewModel = LoginScreenViewModel(loginUseCase: spy)
         
-        #expect(viewModel.email == "alex@darta.demo")
+        #expect(viewModel.email == "alex@tapcash.demo")
         #expect(viewModel.password == "cash1234")
         #expect(viewModel.loading == false)
         #expect(viewModel.errorMessage == nil)
@@ -26,7 +26,7 @@ struct LoginScreenViewModelTests {
     @Test func testLoginSuccess() async throws {
         let spy = LoginUseCaseSpy()
         let account = AccountEntity(
-            email: "alex@darta.demo",
+            email: "alex@tapcash.demo",
             displayName: "Alex Demo",
             availableBalanceCents: 15000,
             currency: "IDR",
@@ -65,12 +65,12 @@ struct LoginScreenViewModelTests {
         try await Task.sleep(nanoseconds: 50_000_000)
         
         #expect(spy.executeCalled == true)
-        #expect(spy.calledEmail == "alex@darta.demo")
+        #expect(spy.calledEmail == "alex@tapcash.demo")
         #expect(spy.calledPassword == "cash1234")
         #expect(viewModel.loading == false)
         #expect(viewModel.errorMessage == nil)
         #expect(loginSuccessCalled == true)
-        #expect(successEmail == "alex@darta.demo")
+        #expect(successEmail == "alex@tapcash.demo")
         #expect(successName == "Alex Demo")
         #expect(successBalance == 15000)
     }

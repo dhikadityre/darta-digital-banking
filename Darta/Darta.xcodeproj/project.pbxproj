@@ -284,6 +284,7 @@
 /* Begin XCBuildConfiguration section */
 		7034B56F303A366D007D7B33 /* Debug-Development */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 70F6EA3030359258005DCFED /* Development.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -363,6 +364,7 @@
 		};
 		7034B570303A366D007D7B33 /* Debug-Staging */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 70F6EA3230359258005DCFED /* Staging.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -442,6 +444,7 @@
 		};
 		7034B571303A366D007D7B33 /* Debug-UAT */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 70F6EA3330359258005DCFED /* UAT.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -521,6 +524,7 @@
 		};
 		7034B572303A366D007D7B33 /* Debug-Production */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 70F6EA3130359258005DCFED /* Production.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -600,6 +604,7 @@
 		};
 		7034B573303A366D007D7B33 /* Release-Staging */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 70F6EA3230359258005DCFED /* Staging.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -672,6 +677,7 @@
 		};
 		7034B574303A366D007D7B33 /* Release-UAT */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 70F6EA3330359258005DCFED /* UAT.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -744,6 +750,7 @@
 		};
 		7034B575303A366D007D7B33 /* Release-Production */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 70F6EA3130359258005DCFED /* Production.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
